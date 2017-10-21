@@ -1,19 +1,22 @@
 package ked.atc_simulator;
 
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
-import ked.atc_simulator.Canvas.PlaneCanvasView;
+import ked.atc_simulator.Canvas.CanvasView;
+import ked.atc_simulator.Entities.Plane;
+import ked.atc_simulator.Entities.Runway;
+import ked.atc_simulator.Gameplay.GameMgr;
+import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class GameActivity extends AppCompatActivity {
 
     private LinearLayout rootLayout;
     private ConstraintLayout boardLayout;
+    private GameMgr gameMgr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,14 @@ public class GameActivity extends AppCompatActivity {
         rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
         boardLayout = (ConstraintLayout) findViewById(R.id.Board);
 
-        PlaneCanvasView c = new PlaneCanvasView(this);
+        gameMgr = new GameMgr();
+
+        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromPixel(this,200),CoordinateConverter.GetYDipsFromPixel(this,200),20));
+        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromPixel(this,400),CoordinateConverter.GetYDipsFromPixel(this,400),250));
+
+        gameMgr.getAirport().addRunway(new Runway(CoordinateConverter.GetXDipsFromPixel(this,975),CoordinateConverter.GetYDipsFromPixel(this,540),CoordinateConverter.GetYDipsFromPixel(this,1000),260));
+
+        CanvasView c = new CanvasView(this,gameMgr);
         boardLayout.addView(c);
     }
 
@@ -39,5 +49,9 @@ public class GameActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+    }
+
+    public GameMgr getGameMgr(){
+        return gameMgr;
     }
 }

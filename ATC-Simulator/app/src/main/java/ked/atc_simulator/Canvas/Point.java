@@ -2,11 +2,11 @@ package ked.atc_simulator.Canvas;
 
 
 
-class Point{
+public class Point{
 
-    double x, y;
+    float x, y;
 
-    Point(double _x, double _y){
+    public Point(float _x, float _y){
 
         x = _x;
 
