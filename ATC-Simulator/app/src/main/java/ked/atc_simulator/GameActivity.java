@@ -28,10 +28,10 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr();
 
-        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromPixel(this,200),CoordinateConverter.GetYDipsFromPixel(this,200),20));
-        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromPixel(this,400),CoordinateConverter.GetYDipsFromPixel(this,400),250));
+        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromCoordinate(this,200),CoordinateConverter.GetYDipsFromCoordinate(this,200),20));
+        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromCoordinate(this,400),CoordinateConverter.GetYDipsFromCoordinate(this,400),250));
 
-        gameMgr.getAirport().addRunway(new Runway(CoordinateConverter.GetXDipsFromPixel(this,975),CoordinateConverter.GetYDipsFromPixel(this,540),CoordinateConverter.GetYDipsFromPixel(this,1000),260));
+        gameMgr.getAirport().addRunway(new Runway(CoordinateConverter.GetXDipsFromCoordinate(this,975),CoordinateConverter.GetYDipsFromCoordinate(this,540),CoordinateConverter.GetYDipsFromCoordinate(this,1000),260));
 
         CanvasView c = new CanvasView(this,gameMgr);
         boardLayout.addView(c);
