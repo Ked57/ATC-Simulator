@@ -1,0 +1,9 @@
+Pushback:
+	#callsign autorisé pushback
+Taxi:
+	#callsign autorisé à taxi point d'arrêt #n°Piste via #taxiway(s) pour
+		la piste #n°Piste
+Décollage:
+	#callsign autorisé au décollage piste #n°Piste
+Atterrissage:
+	#callsign autorisé à l'atterrissage piste #n°Piste 
