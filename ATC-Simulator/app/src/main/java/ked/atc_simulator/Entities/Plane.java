@@ -3,6 +3,7 @@ package ked.atc_simulator.Entities;
 
 import ked.atc_simulator.Canvas.PlanePath;
 import ked.atc_simulator.Canvas.Point;
+import ked.atc_simulator.GameActivity;
 
 public class Plane {
 
@@ -10,8 +11,8 @@ public class Plane {
     private int alt,speed;
     private float heading; // Imperial system (feet, knots)
 
-    public Plane(float x, float y, float heading){
-        path = new PlanePath(new Point(x,y), heading);
+    public Plane(GameActivity context, float x, float y, float heading){
+        path = new PlanePath(context, new Point(x,y), heading);
         alt = 5000;
         speed = 150;
         this.heading = heading;

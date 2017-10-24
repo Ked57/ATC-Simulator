@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import ked.atc_simulator.Canvas.CanvasView;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
+import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
@@ -17,6 +18,7 @@ public class GameActivity extends AppCompatActivity {
     private LinearLayout rootLayout;
     private ConstraintLayout boardLayout;
     private GameMgr gameMgr;
+    private CanvasView c;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,13 +30,18 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr();
 
-        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromCoordinate(this,200),CoordinateConverter.GetYDipsFromCoordinate(this,200),20));
-        gameMgr.addPlane(new Plane(CoordinateConverter.GetXDipsFromCoordinate(this,400),CoordinateConverter.GetYDipsFromCoordinate(this,400),250));
+        gameMgr.addPlane(new Plane(this,200,200,20));
+        gameMgr.addPlane(new Plane(this,400,400,250));
 
-        gameMgr.getAirport().addRunway(new Runway(CoordinateConverter.GetXDipsFromCoordinate(this,975),CoordinateConverter.GetYDipsFromCoordinate(this,540),CoordinateConverter.GetYDipsFromCoordinate(this,1000),260));
+        gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
+        gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));
+        gameMgr.getAirport().addTaxiway(new Taxiway(this,1480,555,100,180,"Bravo",5f,-1f));
+        gameMgr.getAirport().addTaxiway(new Taxiway(this,970,180,962,270,"Charlie",460f,-1f));
 
-        CanvasView c = new CanvasView(this,gameMgr);
+        c = new CanvasView(this,gameMgr);
         boardLayout.addView(c);
+
+        
     }
 
     @Override

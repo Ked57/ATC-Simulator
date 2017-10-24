@@ -5,19 +5,25 @@ import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
 
+import java.util.ArrayList;
+
+import ked.atc_simulator.GameActivity;
+import ked.atc_simulator.Utils.CoordinateConverter;
+
 public class RunwayPath extends Path {
 
-    public RunwayPath(Point base, float lenght, float heading){
+    private ArrayList<Point> points;
+    public RunwayPath(GameActivity context, Point base, float lenght, float heading){
+        points = new ArrayList<>();
+        points.add(new Point(base.x-20,base.y-lenght/2));
+        points.add(new Point(base.x-20, base.y+lenght/2));
+        points.add(new Point(base.x+20,base.y+lenght/2));
+        points.add(new Point(base.x+20,base.y-lenght/2));
 
-        Point[] points= {new Point(base.x-20,base.y-lenght/2),
-                new Point(base.x-20, base.y+lenght/2),
-                new Point(base.x+20,base.y+lenght/2),
-                new Point(base.x+20,base.y-lenght/2)
-        };
 
-        this.moveTo( points[0].x, points[0].y);
-        for (int i = 1; i < points.length; i++){
-            this.lineTo( points[i].x, points[i].y);
+        this.moveTo( CoordinateConverter.GetXDipsFromCoordinate(context,points.get(0).x), CoordinateConverter.GetYDipsFromCoordinate(context,points.get(0).y));
+        for (int i = 1; i < points.size(); i++){
+            this.lineTo( CoordinateConverter.GetXDipsFromCoordinate(context,points.get(i).x), CoordinateConverter.GetYDipsFromCoordinate(context,points.get(i).y));
         }
 
         Matrix mMatrix = new Matrix();

@@ -22,7 +22,15 @@ public class Airport {
         return runways;
     }
 
+    public ArrayList<Taxiway> getTaxiways(){
+        return taxiways;
+    }
+
     public void addRunway(Runway runway) { runways.add(runway); }
 
     public void removeRunway(Runway runway) { runways.remove(runway); }
+
+    public void addTaxiway(Taxiway taxiway) { taxiways.add(taxiway); }
+
+    public void removeTaxiway(Taxiway taxiway) { taxiways.remove(taxiway); }
 }

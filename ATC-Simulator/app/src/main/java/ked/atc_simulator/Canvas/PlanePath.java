@@ -6,14 +6,19 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.Log;
 
+import ked.atc_simulator.GameActivity;
+import ked.atc_simulator.Utils.CoordinateConverter;
+
 public class PlanePath extends Path {
 
     private Point position;
     private Point[] points;
     private float heading;
+    private GameActivity context;
 
-    public PlanePath(Point planePos, float initialHeading){
+    public PlanePath(GameActivity context, Point planePos, float initialHeading){
         super();
+        this.context = context;
 
         this.position = planePos;
         float x = planePos.x;
@@ -36,11 +41,11 @@ public class PlanePath extends Path {
     }
 
     public float calculateX(float x, float offset){
-        return x+offset;
+        return CoordinateConverter.GetXDipsFromCoordinate(context,x+offset);
     }
 
     public float calculateY(float y, float offset){
-        return y+offset;
+        return CoordinateConverter.GetYDipsFromCoordinate(context, y+offset);
     }
 
     public void rotate(float angle){

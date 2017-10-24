@@ -5,12 +5,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.View;
 
 import java.util.ArrayList;
 
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
+import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
 import ked.atc_simulator.R;
 
@@ -32,18 +34,19 @@ public class CanvasView extends View {
         paintBlack = new Paint();
         paintBlack.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBlack.setColor(Color.BLACK);
-        paintBlack.setTextSize(50.0f);
+        paintBlack.setTextSize(45.0f);
         paintWhite.setTextSize(30.0f);
     }
 
     public void onDraw(Canvas canvas){
         this.canvas = canvas;
         canvas.drawColor(Color.BLACK);
-        drawPlanes(canvas,paintWhite);
-        drawRunway(canvas,paintWhite, paintBlack);
+        drawPlanes(paintWhite);
+        drawTaxiways(paintWhite,paintBlack);
+        drawRunway(paintWhite, paintBlack);
     }
 
-    public void drawPlanes(Canvas canvas, Paint paint){
+    public void drawPlanes(Paint paint){
         ArrayList<Plane> planes = gameMgr.getPlanes();
         for(Plane p : planes){
             canvas.drawPath(p.getPath(),paint);
@@ -52,11 +55,23 @@ public class CanvasView extends View {
         }
     }
 
-    public void drawRunway(Canvas canvas, Paint paint, Paint paintBlack){
+    public void drawRunway(Paint paint, Paint paintBlack){
+        paintBlack.setTextSize(45.0f);
         ArrayList<Runway> runways = gameMgr.getAirport().getRunways();
         for(Runway r : runways){
             canvas.drawPath(r.getPath(),paint);
             canvas.drawTextOnPath(""+r.getNumber(), r.getPath(), 5.0f, -2.0f,paintBlack);
+        }
+    }
+
+    public void drawTaxiways(Paint paint, Paint paintBlack){
+        paintBlack.setTextSize(25.0f);
+        ArrayList<Taxiway> taxiways = gameMgr.getAirport().getTaxiways();
+        for(Taxiway t : taxiways){
+            Log.i("Drawing","drawing "+t.getNom());
+            t.getPath().logPoints();
+            canvas.drawPath(t.getPath(),paint);
+            canvas.drawTextOnPath(t.getNom(), t.getPath(), t.gethOffset(), t.getvOffset(),paintBlack);
         }
     }
 
