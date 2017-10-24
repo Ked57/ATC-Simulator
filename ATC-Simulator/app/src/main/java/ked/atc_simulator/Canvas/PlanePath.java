@@ -21,6 +21,16 @@ public class PlanePath extends Path {
         this.context = context;
 
         this.position = planePos;
+
+        updatePoints(position);
+
+        heading = 0;
+        this.drawLines();
+        rotate(initialHeading-heading);
+
+    }
+
+    public void updatePoints(Point planePos){
         float x = planePos.x;
         float y = planePos.y;
 
@@ -33,11 +43,6 @@ public class PlanePath extends Path {
                 new Point(calculateX(x,45), calculateY(y,-5)),
                 new Point(calculateX(x,5), calculateY(y,-5)),
                 new Point(calculateX(x,5), calculateY(y,-25))};
-
-        heading = 0;
-        this.drawLines();
-        rotate(initialHeading-heading);
-
     }
 
     public float calculateX(float x, float offset){

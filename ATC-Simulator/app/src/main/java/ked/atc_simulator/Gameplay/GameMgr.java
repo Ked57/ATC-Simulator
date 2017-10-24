@@ -30,4 +30,10 @@ public class GameMgr {
         planes.remove(plane);
     }
 
+    public void refresh(){
+        for(Plane p : planes){
+            p.calculateNewParams();
+        }
+    }
+
 }

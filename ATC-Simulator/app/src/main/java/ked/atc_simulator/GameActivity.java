@@ -3,8 +3,12 @@ package ked.atc_simulator;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ked.atc_simulator.Canvas.CanvasView;
 import ked.atc_simulator.Entities.Plane;
@@ -19,6 +23,8 @@ public class GameActivity extends AppCompatActivity {
     private ConstraintLayout boardLayout;
     private GameMgr gameMgr;
     private CanvasView c;
+    private Timer t;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +47,26 @@ public class GameActivity extends AppCompatActivity {
         c = new CanvasView(this,gameMgr);
         boardLayout.addView(c);
 
-        
+        t = new Timer();
+        //Set the schedule function and rate
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        gameMgr.refresh();
+                        c.invalidate();
+                        Log.i("Refresh","Refreshing");
+
+                    }
+
+                });
+            }
+
+        }, 0, 1000);
+
     }
 
     @Override

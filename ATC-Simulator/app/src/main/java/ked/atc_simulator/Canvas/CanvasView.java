@@ -47,6 +47,7 @@ public class CanvasView extends View {
     }
 
     public void drawPlanes(Paint paint){
+        Log.i("Refresh","Draw planes");
         ArrayList<Plane> planes = gameMgr.getPlanes();
         for(Plane p : planes){
             canvas.drawPath(p.getPath(),paint);
