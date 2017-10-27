@@ -16,10 +16,10 @@ public class Plane {
 
     public Plane(GameActivity context, float x, float y, float heading){
         base = new Point(x,y);
-        path = new PlanePath(context, base, heading);
         alt = 5000;
         speed = 150;
         this.heading = heading;
+        path = new PlanePath(context, base, heading);
     }
 
     public PlanePath getPath(){ return path; }
@@ -49,8 +49,8 @@ public class Plane {
     }
 
     public void calculateNewParams(){
-        base.x += (speed/3.6)*Math.cos(heading);
-        base.y += (speed/3.6)*Math.sin(heading);
+        base.x += ((speed/2)/3.6)*Math.cos(Math.toRadians(heading-90));
+        base.y += ((speed/2)/3.6)*Math.sin(Math.toRadians(heading-90));
         Log.i("Refresh","Calculating new params : x = "+base.x+", y = "+base.y);
         path.updatePoints(base);
     }

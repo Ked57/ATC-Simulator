@@ -6,66 +6,48 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class PlanePath extends Path {
 
-    private Point position;
-    private Point[] points;
-    private float heading;
+    private ArrayList<Point> points;
     private GameActivity context;
+    private float heading;
 
     public PlanePath(GameActivity context, Point planePos, float initialHeading){
-        super();
         this.context = context;
+        this.heading = initialHeading;
 
-        this.position = planePos;
+        points = new ArrayList<>();
+        updatePoints(planePos);
 
-        updatePoints(position);
-
-        heading = 0;
-        this.drawLines();
-        rotate(initialHeading-heading);
-
+        Log.i("Heading",""+initialHeading);
     }
 
     public void updatePoints(Point planePos){
-        float x = planePos.x;
-        float y = planePos.y;
+        points.clear();
+        points.add(new Point(planePos.x-25,planePos.y+5));
+        points.add(new Point(planePos.x-25, planePos.y-5));
+        points.add(new Point(planePos.x-5, planePos.y-5));
+        points.add(new Point(planePos.x-5, planePos.y-45));
+        points.add(new Point(planePos.x+5, planePos.y-45));
+        points.add(new Point(planePos.x+5, planePos.y-5));
+        points.add(new Point(planePos.x+25,planePos.y-5));
+        points.add(new Point(planePos.x+25,planePos.y+5));
 
-        points = new Point[] {
-                new Point(calculateX(x,-5), calculateY(y,-25)),
-                new Point(calculateX(x,-5), calculateY(y,25)),
-                new Point(calculateX(x,5), calculateY(y,25)),
-                new Point(calculateX(x,5), calculateY(y,5)),
-                new Point(calculateX(x,45), calculateY(y,5)),
-                new Point(calculateX(x,45), calculateY(y,-5)),
-                new Point(calculateX(x,5), calculateY(y,-5)),
-                new Point(calculateX(x,5), calculateY(y,-25))};
-    }
-
-    public float calculateX(float x, float offset){
-        return CoordinateConverter.GetXDipsFromCoordinate(context,x+offset);
-    }
-
-    public float calculateY(float y, float offset){
-        return CoordinateConverter.GetYDipsFromCoordinate(context, y+offset);
-    }
-
-    public void rotate(float angle){
+        this.moveTo( CoordinateConverter.GetXDipsFromCoordinate(context,points.get(0).x), CoordinateConverter.GetYDipsFromCoordinate(context,points.get(0).y));
+        for (int i = 1; i < points.size(); i++){
+            this.lineTo( CoordinateConverter.GetXDipsFromCoordinate(context,points.get(i).x), CoordinateConverter.GetYDipsFromCoordinate(context,points.get(i).y));
+        }
         Matrix mMatrix = new Matrix();
         RectF bounds = new RectF();
         this.computeBounds(bounds, true);
-        mMatrix.postRotate( angle, bounds.centerX(), bounds.centerY());
+        mMatrix.postRotate( heading, bounds.centerX(), bounds.centerY());
         this.transform(mMatrix);
-        heading += angle;
     }
 
-    public void drawLines(){
-        this.moveTo( points[0].x, points[0].y);
-        for (int i = 1; i < points.length; i++){
-            this.lineTo( points[i].x, points[i].y);
-        }
-    }
 }

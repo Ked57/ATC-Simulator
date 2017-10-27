@@ -27,23 +27,25 @@ public class CanvasView extends View {
     public CanvasView(Context context, GameMgr gameMgr){
         super(context);
         this.gameMgr = gameMgr;
-        paintWhite = new Paint();
+
+    }
+
+    public void onDraw(Canvas canvas){paintWhite = new Paint();
         paintWhite.setStyle(Paint.Style.FILL_AND_STROKE);
         paintWhite.setColor(Color.WHITE);
-        paintWhite.setShadowLayer(5.0f, 0.0f, 0.0f, R.color.black_background);
+
         paintBlack = new Paint();
         paintBlack.setStyle(Paint.Style.FILL_AND_STROKE);
         paintBlack.setColor(Color.BLACK);
         paintBlack.setTextSize(45.0f);
         paintWhite.setTextSize(30.0f);
-    }
+        resetPlanes();
 
-    public void onDraw(Canvas canvas){
         this.canvas = canvas;
         canvas.drawColor(Color.BLACK);
-        drawPlanes(paintWhite);
         drawTaxiways(paintWhite,paintBlack);
         drawRunway(paintWhite, paintBlack);
+        drawPlanes(paintWhite);
     }
 
     public void drawPlanes(Paint paint){
@@ -51,8 +53,8 @@ public class CanvasView extends View {
         ArrayList<Plane> planes = gameMgr.getPlanes();
         for(Plane p : planes){
             canvas.drawPath(p.getPath(),paint);
-            canvas.drawTextOnPath(""+(p.getAlt()/100),p.getPath(), -5.0f, 30.0f,paintWhite);
-            canvas.drawTextOnPath(""+p.getSpeed(),p.getPath(), -5.0f, 60.0f,paintWhite);
+            //canvas.drawTextOnPath(""+(p.getAlt()/100),p.getPath(), -20.0f, 40.0f,paintWhite);
+            //canvas.drawTextOnPath(""+p.getSpeed(),p.getPath(), 5.0f, 30.0f,paintWhite);
         }
     }
 
@@ -77,4 +79,12 @@ public class CanvasView extends View {
     }
 
     public Canvas getCanvas(){ return canvas; }
+
+    public void resetPlanes(){
+        ArrayList<Plane> planes = gameMgr.getPlanes();
+        for(Plane p : planes){
+            p.getPath().rewind();
+            p.calculateNewParams();
+        }
+    }
 }
