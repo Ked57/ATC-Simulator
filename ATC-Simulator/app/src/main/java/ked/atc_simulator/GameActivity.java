@@ -37,8 +37,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr();
 
-        gameMgr.addPlane(new Plane(this,200,200,0));
-        gameMgr.addPlane(new Plane(this,400,400,58));
+        gameMgr.addPlane(new Plane(this,1490,585,180, gameMgr.getBravo()));
 
         gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));

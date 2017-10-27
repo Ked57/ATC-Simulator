@@ -22,6 +22,7 @@ public class CanvasView extends View {
     private Canvas canvas;
     private Paint paintWhite;
     private Paint paintBlack;
+    private Paint paintBlue;
 
 
     public CanvasView(Context context, GameMgr gameMgr){
@@ -30,9 +31,15 @@ public class CanvasView extends View {
 
     }
 
-    public void onDraw(Canvas canvas){paintWhite = new Paint();
+    public void onDraw(Canvas canvas){
+        paintWhite = new Paint();
         paintWhite.setStyle(Paint.Style.FILL_AND_STROKE);
         paintWhite.setColor(Color.WHITE);
+
+
+        paintBlue = new Paint();
+        paintBlue.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintBlue.setColor(Color.BLUE);
 
         paintBlack = new Paint();
         paintBlack.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -43,8 +50,8 @@ public class CanvasView extends View {
 
         this.canvas = canvas;
         canvas.drawColor(Color.BLACK);
-        drawTaxiways(paintWhite,paintBlack);
-        drawRunway(paintWhite, paintBlack);
+        drawTaxiways(paintBlue,paintBlack);
+        drawRunway(paintBlue, paintBlack);
         drawPlanes(paintWhite);
     }
 

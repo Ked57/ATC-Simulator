@@ -23,12 +23,14 @@ public class PlanePath extends Path {
         this.heading = initialHeading;
 
         points = new ArrayList<>();
-        updatePoints(planePos);
+        updatePoints(planePos ,heading);
 
         Log.i("Heading",""+initialHeading);
     }
 
-    public void updatePoints(Point planePos){
+    public void updatePoints(Point planePos, float heading){
+        this.heading = heading;
+
         points.clear();
         points.add(new Point(planePos.x-25,planePos.y+5));
         points.add(new Point(planePos.x-25, planePos.y-5));
