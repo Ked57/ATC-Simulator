@@ -14,23 +14,42 @@ public class GameMgr {
     private ArrayList<Plane> planes;
     private Airport airport;
 
-    private Route alpha, bravo, charlie, holding;
+    private Route alpha, bravo, charlie, downwind, base, finale, upwind, crosswind, crosswindRN;
+    private RunwayRoute runwayTO, runwayLanding;
 
     public GameMgr(){
         planes = new ArrayList<Plane>();
         airport = new Airport();
 
-        alpha = new Route(30, 0, null);
+        crosswind = new Route(175, 0, downwind);
+        crosswind.setStartPoint(new Point(1750,950));
+
+        upwind = new Route(175, 90, crosswind);
+        upwind.setStartPoint(new Point(150,950));
+
+        base = new Route(175, 180, upwind);
+        base.setStartPoint(new Point(150,200));
+
+        downwind = new Route(175, 270, base);
+        downwind.setStartPoint(new Point(1750,200));
+
+        crosswindRN = new Route(175, 0, downwind);
+        crosswindRN.setStartPoint(new Point(1750,545));
+
+        runwayLanding = new RunwayRoute(150, 90, bravo,1000);
+        runwayLanding.setStartPoint(new Point(465,545));
+
+        runwayTO = new RunwayRoute(150, 90, crosswindRN,1000);
+        runwayTO.setStartPoint(new Point(465,545));
+
+        alpha = new Route(30, 0, runwayTO);
         alpha.setStartPoint(new Point(465,687));
-        alpha.setEndPoint(new Point(465,585));
 
         charlie = new Route(30, 270,alpha);
         charlie.setStartPoint(new Point(1490,685));
-        charlie.setEndPoint(new Point(465,687));
 
         bravo = new Route(30, 180,charlie);
-        bravo.setStartPoint(new Point(1490,585));
-        bravo.setEndPoint(new Point(1490,687));
+        bravo.setStartPoint(new Point(1490,545));
 
 
     }

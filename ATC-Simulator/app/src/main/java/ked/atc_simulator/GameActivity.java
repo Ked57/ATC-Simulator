@@ -1,6 +1,7 @@
 package ked.atc_simulator;
 
 import android.graphics.Color;
+import android.os.PowerManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ public class GameActivity extends AppCompatActivity {
     private GameMgr gameMgr;
     private CanvasView c;
     private Timer t;
+    protected PowerManager.WakeLock mWakeLock;
 
 
     @Override
@@ -37,7 +39,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr();
 
-        gameMgr.addPlane(new Plane(this,1490,585,180, gameMgr.getBravo()));
+        gameMgr.addPlane(new Plane(this,470,635,0, gameMgr.getAlpha()));
 
         gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));
@@ -65,6 +67,11 @@ public class GameActivity extends AppCompatActivity {
 
         }, 0, 1000);
 
+         /* This code together with the one in onDestroy()
+         * will make the screen be always on until this Activity gets destroyed. */
+        final PowerManager pm = (PowerManager) getSystemService(this.POWER_SERVICE);
+        this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
+        this.mWakeLock.acquire();
     }
 
     @Override
@@ -79,6 +86,12 @@ public class GameActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        this.mWakeLock.release();
+        super.onDestroy();
     }
 
     public GameMgr getGameMgr(){

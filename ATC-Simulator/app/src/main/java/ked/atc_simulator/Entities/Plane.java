@@ -7,13 +7,14 @@ import ked.atc_simulator.Canvas.PlanePath;
 import ked.atc_simulator.Canvas.Point;
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.Gameplay.Route;
+import ked.atc_simulator.Gameplay.RunwayRoute;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class Plane {
 
     private PlanePath path;
-    private int alt,speed; // Imperial system (feet, knots)
-    private float heading;
+    private int alt; // Imperial system (feet, knots)
+    private float heading,speed;
     private Point base;
     private Route route;
     private GameActivity context;
@@ -43,7 +44,7 @@ public class Plane {
         this.alt = alt;
     }
 
-    public int getSpeed() {
+    public float getSpeed() {
         return speed;
     }
 
@@ -61,19 +62,26 @@ public class Plane {
 
     public void calculateNewParams(){
         if(route.getNextRoute() != null) {
-            float diffX = CoordinateConverter.GetXDipsFromCoordinate(context,base.x - route.getEndPoint().x);
-            float diffY = CoordinateConverter.GetXDipsFromCoordinate(context,base.y - route.getEndPoint().y);
-
-            if (diffX <= 10 && diffX > -10 && diffY <= 10 && diffY > -10) {
+            float diffX = CoordinateConverter.GetXDipsFromCoordinate(context,base.x - route.getNextRoute().getStartPoint().x);
+            float diffY = CoordinateConverter.GetXDipsFromCoordinate(context,base.y - route.getNextRoute().getStartPoint().y);
+            Log.i("Refresh", "Calculating new params speed : "+(speed/3)+", diffX: "+diffX+" , diffY: "+diffY);
+            if (diffX <= speed/3 && diffX > -(speed/3) && diffY <= speed/3 && diffY > -(speed/3)) {
                 route = route.getNextRoute();
-                heading = route.getHeading();
-                speed = route.getSpeed();
             }
-
-            base.x += ((speed / 2) / 3.6) * Math.cos(Math.toRadians(heading - 90));
-            base.y += ((speed / 2) / 3.6) * Math.sin(Math.toRadians(heading - 90));
-            Log.i("Refresh", "Calculating new params : x = " + base.x + ", y = " + base.y);
-            path.updatePoints(base, heading);
         }
+
+        heading = route.getHeading();
+        speed = route.getSpeed();
+
+        if(route instanceof RunwayRoute){
+            float endx = (route.getStartPoint().x + ((RunwayRoute) route).getLenght());
+            speed = route.getSpeed()*(base.x/endx);
+            Log.i("Speed","runway speed:"+(route.getSpeed()*(base.x/endx)));
+        }
+
+        base.x += ((speed / 2) / 3.6) * Math.cos(Math.toRadians(heading - 90));
+        base.y += ((speed / 2) / 3.6) * Math.sin(Math.toRadians(heading - 90));
+        Log.i("Refresh", "Calculating new params : x = " + base.x + ", y = " + base.y);
+        path.updatePoints(base, heading);
     }
 }
