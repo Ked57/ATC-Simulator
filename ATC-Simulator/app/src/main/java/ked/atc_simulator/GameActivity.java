@@ -17,6 +17,7 @@ import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
+import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class GameActivity extends AppCompatActivity {
@@ -39,7 +40,7 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr();
 
-        gameMgr.addPlane(new Plane(this,1750,950,0, gameMgr.getCrosswind()));
+        gameMgr.addPlane(new Plane(this,500,200,270, gameMgr.getDownwind(), new ArrivingState(gameMgr)));
 
         gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));

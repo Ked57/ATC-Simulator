@@ -1,26 +1,32 @@
 package ked.atc_simulator.Gameplay;
 
 
-import java.util.ArrayList;
-
 import ked.atc_simulator.Canvas.Point;
 
 public class Route {
 
     private Point startPoint;
-    private int speed;
+    private int speed, precisionCoefx, precisionCoefy;
     private float heading;
     private Route nextRoute;
+    private String name;
 
-    public Route(int speed, float heading){
+    public Route(int speed, float heading, String name, int precisionCoefx, int precisionCoefy){
         this.speed = speed;
         this.heading = heading;
         startPoint = new Point(0,0);
+        this.name = name;
+        this.precisionCoefx = precisionCoefx;
+        this.precisionCoefy = precisionCoefy;
     }
 
     public float getHeading(){
         return heading;
     }
+
+    public int getPrecisionCoefX() { return precisionCoefx; }
+
+    public int getPrecisionCoefY() { return precisionCoefy; }
 
     public int getSpeed(){
         return speed;
@@ -37,4 +43,6 @@ public class Route {
     public void setNextRoute(Route route){ nextRoute = route;}
 
     public Route getNextRoute() { return nextRoute; }
+
+    public String getName() { return name; }
 }

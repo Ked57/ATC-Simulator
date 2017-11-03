@@ -21,34 +21,37 @@ public class GameMgr {
         planes = new ArrayList<Plane>();
         airport = new Airport();
 
-        crosswind = new Route(175, 0);
+        finale = new Route(175, 90, "Final", 3, 17);
+        finale.setStartPoint(new Point(150,545));
+
+        crosswind = new Route(175, 0, "Crosswind", 3, 3);
         crosswind.setStartPoint(new Point(1750,950));
 
-        upwind = new Route(175, 90);
+        upwind = new Route(175, 90, "Upwind", 3, 3);
         upwind.setStartPoint(new Point(150,950));
 
-        base = new Route(175, 180);
+        base = new Route(175, 180, "Base", 3, 3);
         base.setStartPoint(new Point(150,200));
 
-        downwind = new Route(175, 270);
+        downwind = new Route(175, 270, "Downwind", 3, 3);
         downwind.setStartPoint(new Point(1750,200));
 
-        crosswindRN = new Route(175, 0);
+        crosswindRN = new Route(175, 0, "CrosswindRN" , 3, 3);
         crosswindRN.setStartPoint(new Point(1750,545));
 
-        runwayLanding = new RunwayRoute(150, 90,1000);
+        runwayLanding = new RunwayRoute(150, 90,1000, "RunwayLanding", 9, 3);
         runwayLanding.setStartPoint(new Point(465,545));
 
-        runwayTO = new RunwayRoute(150, 90,1000);
+        runwayTO = new RunwayRoute(150, 90,1000, "RunwayTO", 3, 3);
         runwayTO.setStartPoint(new Point(465,545));
 
-        alpha = new Route(30, 0);
+        alpha = new Route(30, 0, "Alpha", 3, 3);
         alpha.setStartPoint(new Point(465,687));
 
-        charlie = new Route(30, 270);
+        charlie = new Route(30, 270, "Charlie", 3, 3);
         charlie.setStartPoint(new Point(1490,685));
 
-        bravo = new Route(30, 180);
+        bravo = new Route(30, 180, "Bravo", 9, 3);
         bravo.setStartPoint(new Point(1490,545));
 
         crosswind.setNextRoute(downwind);
@@ -61,6 +64,7 @@ public class GameMgr {
         alpha.setNextRoute(runwayTO);
         charlie.setNextRoute(alpha);
         bravo.setNextRoute(charlie);
+        finale.setNextRoute(runwayLanding);
 
     }
 
