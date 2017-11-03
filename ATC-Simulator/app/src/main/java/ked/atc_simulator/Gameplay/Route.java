@@ -12,11 +12,10 @@ public class Route {
     private float heading;
     private Route nextRoute;
 
-    public Route(int speed, float heading, Route nextRoute){
+    public Route(int speed, float heading){
         this.speed = speed;
         this.heading = heading;
         startPoint = new Point(0,0);
-        this.nextRoute = nextRoute;
     }
 
     public float getHeading(){
@@ -34,6 +33,8 @@ public class Route {
     public void setStartPoint(Point startPoint) {
         this.startPoint = startPoint;
     }
+
+    public void setNextRoute(Route route){ nextRoute = route;}
 
     public Route getNextRoute() { return nextRoute; }
 }
