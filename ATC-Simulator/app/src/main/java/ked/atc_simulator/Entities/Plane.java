@@ -91,6 +91,8 @@ public class Plane {
             }else if(route.getName().equals("CrosswindRN")){
                 route.setNextRoute(planeState.crosswindRNAction());
                 Log.i("RefreshState","CrosswindRNAction , routeName : "+route.getName());
+            }else if(route.getName().equals("Final") && (diffY >= 5 || diffY <= -5)){
+                base.y = route.getStartPoint().y;
             }
 
             heading = route.getHeading();
