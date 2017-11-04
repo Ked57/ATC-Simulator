@@ -45,7 +45,9 @@ public class Plane {
     }
 
     public void setBehavior(int b) {
-        behavior = b;
+        if(b == 3 && (!route.getName().equals("Alpha") && !route.getName().equals("Bravo") && !route.getName().equals("Charlie"))){
+            behavior = 2;
+        }else behavior = b;
         Log.i("Refresh","Setting behavior to "+b);
     }
 
