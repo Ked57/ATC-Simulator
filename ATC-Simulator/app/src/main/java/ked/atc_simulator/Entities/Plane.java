@@ -84,15 +84,14 @@ public class Plane {
                 Log.i("Refresh","Switching route "+route.getName());
             }
 
-            if(route.getName().equals("Base")){
-                if(planeState instanceof ArrivingState) Log.i("Refresh","planeState is ArrivingState"); else Log.i("Refresh","planeState is PlaneState");
+            if(route.getName().equals("Base") && !route.getNextRoute().equals(planeState.baseAction())){
                 route.setNextRoute(planeState.baseAction());
                 Log.i("RefreshState","BaseAction , routeName : "+route.getNextRoute().getName());
-            }else if(route.getName().equals("CrosswindRN")){
+            }else if(route.getName().equals("CrosswindRN") && !route.getNextRoute().equals(planeState.crosswindRNAction())){
                 route.setNextRoute(planeState.crosswindRNAction());
                 Log.i("RefreshState","CrosswindRNAction , routeName : "+route.getName());
-            }else if(route.getName().equals("Final") && (diffY >= 5 || diffY <= -5)){
-                base.y = route.getStartPoint().y;
+            }else if(route.getName().equals("Final") && (diffY >= 5 || diffY <= 2)){
+                base.y = route.getStartPoint().y+10;
             }
 
             heading = route.getHeading();
