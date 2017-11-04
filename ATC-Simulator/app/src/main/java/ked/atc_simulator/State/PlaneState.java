@@ -12,7 +12,6 @@ public abstract class PlaneState {
 
 
     public Route baseAction(){
-        Log.i("Refresh","PlaneState baseAction");
         return null;
     }
 

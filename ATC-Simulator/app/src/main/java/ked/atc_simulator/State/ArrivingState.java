@@ -19,7 +19,6 @@ public class ArrivingState extends PlaneState {
 
     @Override
     public Route baseAction(){
-        Log.i("Refresh","ArrivingState baseAction "+gameMgr.getFinale().toString());
         return gameMgr.getFinale();
     }
 

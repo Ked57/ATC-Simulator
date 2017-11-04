@@ -73,6 +73,31 @@ public class GameActivity extends AppCompatActivity {
         final PowerManager pm = (PowerManager) getSystemService(this.POWER_SERVICE);
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
         this.mWakeLock.acquire();
+
+        findViewById(R.id.Normal).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameMgr.getPlanes().get(0).setBehavior(0);
+            }
+        });
+        findViewById(R.id.Holding).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameMgr.getPlanes().get(0).setBehavior(1);
+            }
+        });
+        findViewById(R.id.HoldShort).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameMgr.getPlanes().get(0).setBehavior(2);
+            }
+        });
+        findViewById(R.id.Stop).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                gameMgr.getPlanes().get(0).setBehavior(3);
+            }
+        });
     }
 
     @Override
@@ -92,6 +117,7 @@ public class GameActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         this.mWakeLock.release();
+        t.cancel();
         super.onDestroy();
     }
 

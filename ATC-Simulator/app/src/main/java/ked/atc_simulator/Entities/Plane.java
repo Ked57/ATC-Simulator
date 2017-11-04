@@ -16,14 +16,15 @@ public class Plane {
 
     private PlanePath path;
     private int alt; // Imperial system (feet, knots)
-    private float heading,speed;
+    private float heading, speed;
     private Point base;
     private Route route;
     private GameActivity context;
     private PlaneState planeState;
+    private int behavior; // 0 "normal",  1 "holding" -> Stays in the holding circuit, 2 "runway" -> waits before runway entrance, 3 "waiting" -> stops until further notice
 
-    public Plane(GameActivity context, float x, float y, float heading, Route route, PlaneState planeState){
-        base = new Point(x,y);
+    public Plane(GameActivity context, float x, float y, float heading, Route route, PlaneState planeState) {
+        base = new Point(x, y);
         this.route = route;
         alt = 0;
         speed = route.getSpeed();
@@ -31,13 +32,21 @@ public class Plane {
         path = new PlanePath(context, base, heading);
         this.context = context;
         this.planeState = planeState;
+        behavior = 0;
     }
 
-    public PlanePath getPath(){ return path; }
+    public PlanePath getPath() {
+        return path;
+    }
 
-    public void setRoue(Route route){
+    public void setRoue(Route route) {
         this.route = route;
         this.heading = route.getHeading();
+    }
+
+    public void setBehavior(int b) {
+        behavior = b;
+        Log.i("Refresh","Setting behavior to "+b);
     }
 
     public int getAlt() {
@@ -72,43 +81,48 @@ public class Plane {
         this.planeState = planeState;
     }
 
-    public void calculateNewParams(){
-        if(route.getNextRoute() != null) {
-            float diffX = CoordinateConverter.GetXDipsFromCoordinate(context,base.x - route.getNextRoute().getStartPoint().x);
-            float diffY = CoordinateConverter.GetXDipsFromCoordinate(context,base.y - route.getNextRoute().getStartPoint().y);
-            Log.i("Refresh", "Calculating new params routeName: "+route.getName()+", speed : "+(speed/3)+", diffX: "+diffX+" , diffY: "+diffY);
-            int pcx = route.getNextRoute().getPrecisionCoefX();
-            int pcy = route.getNextRoute().getPrecisionCoefY();
-            if(diffX <= speed/pcx && diffX > -(speed/pcx) && diffY <= speed/pcy && diffY > -(speed/pcy)) {
-               route = route.getNextRoute();
-                Log.i("Refresh","Switching route "+route.getName());
+    public void calculateNewParams() {
+        if (behavior != 3) {
+            if (route.getNextRoute() != null) {
+                float diffX = CoordinateConverter.GetXDipsFromCoordinate(context, base.x - route.getNextRoute().getStartPoint().x);
+                float diffY = CoordinateConverter.GetXDipsFromCoordinate(context, base.y - route.getNextRoute().getStartPoint().y);
+                Log.i("Refresh", "Calculating new params routeName: " + route.getName() + ", speed : " + (speed / 3) + ", diffX: " + diffX + " , diffY: " + diffY);
+                int pcx = route.getNextRoute().getPrecisionCoefX();
+                int pcy = route.getNextRoute().getPrecisionCoefY();
+                if (diffX <= speed / pcx && diffX > -(speed / pcx) && diffY <= speed / pcy && diffY > -(speed / pcy)) {
+                    if(route.getNextRoute() instanceof  RunwayRoute && behavior == 2) {
+                        behavior = 3;
+                        return; // not sure about this
+                    }else route = route.getNextRoute();
+                    Log.i("Refresh", "Switching route " + route.getName());
+                }
+
+                if (route.getName().equals("Base") && behavior != 1 && !planeState.baseAction().equals(null) && !route.getNextRoute().equals(planeState.baseAction())) {
+                    route.setNextRoute(planeState.baseAction());
+                    Log.i("RefreshState", "BaseAction , routeName : " + route.getNextRoute().getName());
+                } else if (route.getName().equals("CrosswindRN") && behavior != 1 && !planeState.crosswindRNAction().equals(null) && !route.getNextRoute().equals(planeState.crosswindRNAction())) {
+                    route.setNextRoute(planeState.crosswindRNAction());
+                    Log.i("RefreshState", "CrosswindRNAction , routeName : " + route.getName());
+                } else if (route.getName().equals("Final") && (diffY >= 5 || diffY <= 2)) {
+                    base.y = route.getStartPoint().y + 10;
+                }
+
+                heading = route.getHeading();
+                speed = route.getSpeed();
+
+                if (route instanceof RunwayRoute) {
+                    float endx = (route.getStartPoint().x + ((RunwayRoute) route).getLenght());
+                    if (route.getName().equals("RunwayTO"))
+                        speed = route.getSpeed() * (base.x / endx);
+                    else speed = route.getSpeed() * (route.getStartPoint().x / base.x);
+                    Log.i("Speed", "runway speed:" + (route.getSpeed() / (base.x / endx)));
+                }
             }
 
-            if(route.getName().equals("Base") && !route.getNextRoute().equals(planeState.baseAction())){
-                route.setNextRoute(planeState.baseAction());
-                Log.i("RefreshState","BaseAction , routeName : "+route.getNextRoute().getName());
-            }else if(route.getName().equals("CrosswindRN") && !route.getNextRoute().equals(planeState.crosswindRNAction())){
-                route.setNextRoute(planeState.crosswindRNAction());
-                Log.i("RefreshState","CrosswindRNAction , routeName : "+route.getName());
-            }else if(route.getName().equals("Final") && (diffY >= 5 || diffY <= 2)){
-                base.y = route.getStartPoint().y+10;
-            }
-
-            heading = route.getHeading();
-            speed = route.getSpeed();
-
-            if(route instanceof RunwayRoute){
-                float endx = (route.getStartPoint().x + ((RunwayRoute) route).getLenght());
-                if(route.getName().equals("RunwayTO"))
-                    speed = route.getSpeed()*(base.x/endx);
-                else speed = route.getSpeed()*(route.getStartPoint().x/base.x);
-                Log.i("Speed","runway speed:"+(route.getSpeed()/(base.x/endx)));
-            }
+            base.x += ((speed / 2) / 3.6) * Math.cos(Math.toRadians(heading - 90));
+            base.y += ((speed / 2) / 3.6) * Math.sin(Math.toRadians(heading - 90));
+            Log.i("Refresh", "Calculating new params : x = " + base.x + ", y = " + base.y);
         }
-
-        base.x += ((speed / 2) / 3.6) * Math.cos(Math.toRadians(heading - 90));
-        base.y += ((speed / 2) / 3.6) * Math.sin(Math.toRadians(heading - 90));
-        Log.i("Refresh", "Calculating new params : x = " + base.x + ", y = " + base.y);
         path.updatePoints(base, heading);
     }
 }
