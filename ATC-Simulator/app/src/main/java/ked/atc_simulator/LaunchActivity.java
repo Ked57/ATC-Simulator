@@ -20,5 +20,21 @@ public class LaunchActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.tutorialButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LaunchActivity.this, TutorialActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        findViewById(R.id.creditButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LaunchActivity.this, CreditsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

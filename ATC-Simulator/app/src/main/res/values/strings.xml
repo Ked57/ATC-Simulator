@@ -2,6 +2,10 @@
     <string name="app_name">ATC-Simulator</string>
 
     <string name="title_activity_game">GameActivity</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="jouerButton">Jouer</string>
+    <string name="tutorialButton">Tutoriel</string>
+    <string name="creditsButton">Credits</string>
+    <string name="creditText">Ce jeu a été réalisé par Clément Fassot, élève à l\'IUT informatique de Laval.
+                                Il a été réalisé dans le cadre d\'un projet universitaire.\n
+                                Les sources de ce jeu sont en ligne à l\'adresse : github.com/Ked57/ATC-Simulator</string>
 </resources>
