@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 
 import java.util.Timer;
@@ -22,7 +23,7 @@ import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class GameActivity extends AppCompatActivity {
 
-    private LinearLayout rootLayout;
+    private LinearLayout rootLayout, choicesLayout;
     private ConstraintLayout boardLayout;
     private GameMgr gameMgr;
     private CanvasView c;
@@ -37,8 +38,9 @@ public class GameActivity extends AppCompatActivity {
 
         rootLayout = (LinearLayout) findViewById(R.id.rootLayout);
         boardLayout = (ConstraintLayout) findViewById(R.id.Board);
+        choicesLayout = (LinearLayout) findViewById(R.id.choicesLayout);
 
-        gameMgr = new GameMgr();
+        gameMgr = new GameMgr(this);
 
         gameMgr.addPlane(new Plane(this,500,200,270, gameMgr.getDownwind(), new ArrivingState(gameMgr)));
 
@@ -74,7 +76,7 @@ public class GameActivity extends AppCompatActivity {
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
         this.mWakeLock.acquire();
 
-        findViewById(R.id.Normal).setOnClickListener(new View.OnClickListener() {
+        /*findViewById(R.id.Normal).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 gameMgr.getPlanes().get(0).setBehavior(0);
@@ -97,7 +99,18 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View view) {
                 gameMgr.getPlanes().get(0).setBehavior(3);
             }
-        });
+        });*/
+
+
+        gameMgr.getSentenceBuilder().buildSentence();
+    }
+
+    public void clearChoices(){
+        choicesLayout.removeAllViewsInLayout();
+    }
+
+    public void choicesAddButton(Button button){
+        choicesLayout.addView(button);
     }
 
     @Override

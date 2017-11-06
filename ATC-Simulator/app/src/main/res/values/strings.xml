@@ -8,4 +8,11 @@
     <string name="creditText">Ce jeu a été réalisé par Clément Fassot, élève à l\'IUT informatique de Laval.
                                 Il a été réalisé dans le cadre d\'un projet universitaire.\n
                                 Les sources de ce jeu sont en ligne à l\'adresse : github.com/Ked57/ATC-Simulator</string>
+
+    <string name="sentence_taxi_cleared">autorisé au taxi point d\'arrêt </string>
+    <string name="sentence_taxi_rw">pour la piste </string>
+
+    <string name="sentence_takeoff_cleared">autorisé au décollage </string>
+
+    <string name="sentence_landing_cleared">autorisé à l\'atterissage </string>
 </resources>

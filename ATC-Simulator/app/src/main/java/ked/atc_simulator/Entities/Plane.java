@@ -22,6 +22,7 @@ public class Plane {
     private GameActivity context;
     private PlaneState planeState;
     private int behavior; // 0 "normal",  1 "holding" -> Stays in the holding circuit, 2 "runway" -> waits before runway entrance, 3 "waiting" -> stops until further notice
+    private String name;
 
     public Plane(GameActivity context, float x, float y, float heading, Route route, PlaneState planeState) {
         base = new Point(x, y);
@@ -33,6 +34,7 @@ public class Plane {
         this.context = context;
         this.planeState = planeState;
         behavior = 0;
+        name = "default";
     }
 
     public PlanePath getPath() {
@@ -82,6 +84,8 @@ public class Plane {
     public void setPlaneState(PlaneState planeState) {
         this.planeState = planeState;
     }
+
+    public String getName() { return name; }
 
     public void calculateNewParams() {
         if (behavior != 3) {

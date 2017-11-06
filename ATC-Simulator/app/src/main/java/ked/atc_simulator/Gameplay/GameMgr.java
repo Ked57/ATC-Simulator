@@ -1,5 +1,7 @@
 package ked.atc_simulator.Gameplay;
 
+import android.provider.Telephony;
+
 import java.util.ArrayList;
 
 import ked.atc_simulator.Canvas.PlanePath;
@@ -8,6 +10,7 @@ import ked.atc_simulator.Entities.Airport;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
+import ked.atc_simulator.GameActivity;
 
 public class GameMgr {
 
@@ -16,10 +19,16 @@ public class GameMgr {
 
     private Route alpha, bravo, charlie, downwind, base, finale, upwind, crosswind, crosswindRN;
     private RunwayRoute runwayTO, runwayLanding;
+    private GameActivity context;
+    private SentenceBuilder sentenceBuilder;
 
-    public GameMgr(){
+    public GameMgr(GameActivity context){
         planes = new ArrayList<Plane>();
         airport = new Airport();
+
+        this.context = context;
+        this.sentenceBuilder = new SentenceBuilder(this);
+
 
         finale = new Route(175, 90, "Final", 3, 17);
         finale.setStartPoint(new Point(150,545));
@@ -46,7 +55,7 @@ public class GameMgr {
         runwayTO.setStartPoint(new Point(465,545));
 
         alpha = new Route(30, 0, "Alpha", 3, 3);
-        alpha.setStartPoint(new Point(465,687));
+        alpha.setStartPoint(new Point(465,685));
 
         charlie = new Route(30, 270, "Charlie", 3, 3);
         charlie.setStartPoint(new Point(1490,685));
@@ -123,4 +132,8 @@ public class GameMgr {
     public RunwayRoute getRunwayLanding() {
         return runwayLanding;
     }
+
+    public GameActivity getContext() { return context; }
+
+    public SentenceBuilder getSentenceBuilder() { return sentenceBuilder; }
 }
