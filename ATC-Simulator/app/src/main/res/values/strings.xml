@@ -9,10 +9,21 @@
                                 Il a été réalisé dans le cadre d\'un projet universitaire.\n
                                 Les sources de ce jeu sont en ligne à l\'adresse : github.com/Ked57/ATC-Simulator</string>
 
-    <string name="sentence_taxi_cleared">autorisé au taxi point d\'arrêt </string>
-    <string name="sentence_taxi_rw">pour la piste </string>
+    <string name="backButtonText">Retour</string>
+
+    <string name="sentence_taxi_cleared">taxi </string>
+    <string name="sentence_taxi_holdshort">au point d\'arrêt de la piste 27 </string>
+    <string name="sentence_taxi_parking">au parking </string>
+    <string name="sentence_taxi_via">via </string>
+    <string name="sentence_taxi_alpha">alpha </string>
+    <string name="sentence_taxi_bravo">bravo </string>
+    <string name="sentence_taxi_charlie">charlie </string>
 
     <string name="sentence_takeoff_cleared">autorisé au décollage </string>
 
+
     <string name="sentence_landing_cleared">autorisé à l\'atterissage </string>
+
+
+    <string name="sentence_rw27">piste 27 </string>
 </resources>

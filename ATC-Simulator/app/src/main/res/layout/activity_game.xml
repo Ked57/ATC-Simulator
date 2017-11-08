@@ -5,6 +5,7 @@
     android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black_background"
     android:orientation="vertical"
     tools:context="ked.atc_simulator.GameActivity">
 
@@ -25,32 +26,6 @@
         android:orientation="horizontal"
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
-
-        <Button
-            android:id="@+id/Normal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Normal" />
-
-        <Button
-            android:id="@+id/Holding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Holding" />
-
-        <Button
-            android:id="@+id/HoldShort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Hold Short" />
-
-        <Button
-            android:id="@+id/Stop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Stop" />
 
     </LinearLayout>
 

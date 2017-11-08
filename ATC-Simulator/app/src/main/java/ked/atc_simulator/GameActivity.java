@@ -42,7 +42,8 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr(this);
 
-        gameMgr.addPlane(new Plane(this,500,200,270, gameMgr.getDownwind(), new ArrivingState(gameMgr)));
+        gameMgr.addPlane(new Plane(this,"N851TB",1490,685,270, gameMgr.getCharlie(), new ArrivingState(gameMgr)));
+        gameMgr.getPlanes().get(0).setBehavior(3);
 
         gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));
@@ -76,37 +77,22 @@ public class GameActivity extends AppCompatActivity {
         this.mWakeLock = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK, "My Tag");
         this.mWakeLock.acquire();
 
-        /*findViewById(R.id.Normal).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameMgr.getPlanes().get(0).setBehavior(0);
-            }
-        });
-        findViewById(R.id.Holding).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameMgr.getPlanes().get(0).setBehavior(1);
-            }
-        });
-        findViewById(R.id.HoldShort).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameMgr.getPlanes().get(0).setBehavior(2);
-            }
-        });
-        findViewById(R.id.Stop).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                gameMgr.getPlanes().get(0).setBehavior(3);
-            }
-        });*/
-
 
         gameMgr.getSentenceBuilder().buildSentence();
     }
 
     public void clearChoices(){
+
         choicesLayout.removeAllViewsInLayout();
+        Button backButton = new Button(this);
+        backButton.setText(R.string.backButtonText);
+        choicesLayout.addView(backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gameMgr.getSentenceBuilder().buildSentence();
+            }
+        });
     }
 
     public void choicesAddButton(Button button){

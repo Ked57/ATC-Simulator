@@ -2,9 +2,13 @@ package ked.atc_simulator.Canvas;
 
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
 
@@ -15,6 +19,7 @@ import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
 import ked.atc_simulator.R;
+import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class CanvasView extends View {
 
@@ -53,6 +58,11 @@ public class CanvasView extends View {
         drawTaxiways(paintBlue,paintBlack);
         drawRunway(paintBlue, paintBlack);
         drawPlanes(paintWhite);
+
+        Resources res = getResources();
+        Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.backward);
+        //bitmap.setHeight(CoordinateConverter.GetYDipsFromCoordinate(50.0f));
+        canvas.drawBitmap(bitmap, 0, 0, paintWhite);
     }
 
     public void drawPlanes(Paint paint){

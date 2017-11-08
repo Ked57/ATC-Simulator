@@ -1,15 +1,11 @@
 package ked.atc_simulator.Gameplay;
 
-import android.provider.Telephony;
 
 import java.util.ArrayList;
 
-import ked.atc_simulator.Canvas.PlanePath;
 import ked.atc_simulator.Canvas.Point;
 import ked.atc_simulator.Entities.Airport;
 import ked.atc_simulator.Entities.Plane;
-import ked.atc_simulator.Entities.Runway;
-import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.GameActivity;
 
 public class GameMgr {
@@ -21,6 +17,7 @@ public class GameMgr {
     private RunwayRoute runwayTO, runwayLanding;
     private GameActivity context;
     private SentenceBuilder sentenceBuilder;
+    public final Plane emptyPlane = new Plane();
 
     public GameMgr(GameActivity context){
         planes = new ArrayList<Plane>();
@@ -136,4 +133,17 @@ public class GameMgr {
     public GameActivity getContext() { return context; }
 
     public SentenceBuilder getSentenceBuilder() { return sentenceBuilder; }
+
+    public Plane getPlaneByName(String name){
+        for(Plane p : planes){
+            if(p.getName().equals(name)){
+                return p;
+            }
+        }
+        return emptyPlane;
+    }
+
+    public void newSentenceBuilder(){
+        sentenceBuilder = new SentenceBuilder(this);
+    }
 }
