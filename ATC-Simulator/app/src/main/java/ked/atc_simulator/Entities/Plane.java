@@ -49,10 +49,10 @@ public class Plane {
     }
 
     public void setBehavior(int b) {
-        if(b == 3 && (!route.getName().equals("Alpha") && !route.getName().equals("Bravo") && !route.getName().equals("Charlie"))){
+        if (b == 3 && (!route.getName().equals("Alpha") && !route.getName().equals("Bravo") && !route.getName().equals("Charlie"))) {
             behavior = 2;
-        }else behavior = b;
-        Log.i("Refresh","Setting behavior to "+b);
+        } else behavior = b;
+        Log.i("Refresh", "Setting behavior to " + b);
     }
 
     public int getAlt() {
@@ -94,14 +94,16 @@ public class Plane {
             if (route.getNextRoute() != null) {
                 float diffX = CoordinateConverter.GetXDipsFromCoordinate(context, base.x - route.getNextRoute().getStartPoint().x);
                 float diffY = CoordinateConverter.GetXDipsFromCoordinate(context, base.y - route.getNextRoute().getStartPoint().y);
+
                 Log.i("Refresh", "Calculating new params routeName: " + route.getName() + ", speed : " + (speed / 3) + ", diffX: " + diffX + " , diffY: " + diffY);
                 int pcx = route.getNextRoute().getPrecisionCoefX();
                 int pcy = route.getNextRoute().getPrecisionCoefY();
+
                 if (diffX <= speed / pcx && diffX > -(speed / pcx) && diffY <= speed / pcy && diffY > -(speed / pcy)) {
-                    if(route.getNextRoute() instanceof  RunwayRoute && behavior == 2) {
+                    if (route.getNextRoute() instanceof RunwayRoute && behavior == 2) {
                         behavior = 3;
                         return; // not sure about this
-                    }else route = route.getNextRoute();
+                    } else route = route.getNextRoute();
                     Log.i("Refresh", "Switching route " + route.getName());
                 }
 

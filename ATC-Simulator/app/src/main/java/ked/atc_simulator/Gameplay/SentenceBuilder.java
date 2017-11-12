@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.R;
+import ked.atc_simulator.State.ArrivingState;
+import ked.atc_simulator.State.DepartingState;
 
 /**
  * Will build the sentences
@@ -108,14 +110,43 @@ public class SentenceBuilder {
     }
 
     public void buildTakeOffClearance(){
+        Log.i("Sentence","take off sentence");
 
         gameActivity.clearChoices();
-
+        Button buttonRunway27 = new Button(gameActivity);
+        gameActivity.choicesAddButton(buttonRunway27);
+        buttonRunway27.setText(R.string.sentence_takeoff_rw27);
+        buttonRunway27.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currPlane.setBehavior(0);// Normal
+                currPlane.setPlaneState(new DepartingState(gameMgr));
+                sentence +=  gameActivity.getResources().getString(R.string.sentence_takeoff_via)+" ";
+                sentence += gameActivity.getResources().getString(R.string.sentence_takeoff_rw27);
+                gameActivity.clearChoices();
+                Log.i("Sentence","the sentence is : "+sentence);
+                buildSentence(); // Start over sentence building
+            }
+        });
     }
 
     public void buildLandingClearance(){
 
         gameActivity.clearChoices();
+        Button buttonRunway27 = new Button(gameActivity);
+        gameActivity.choicesAddButton(buttonRunway27);
+        buttonRunway27.setText(R.string.sentence_takeoff_rw27);
+        buttonRunway27.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                currPlane.setBehavior(0);// Normal
+                currPlane.setPlaneState(new ArrivingState(gameMgr));
+                sentence += gameActivity.getResources().getString(R.string.sentence_takeoff_rw27);
+                gameActivity.clearChoices();
+                Log.i("Sentence","the sentence is : "+sentence);
+                buildSentence(); // Start over sentence building
+            }
+        });
     }
 
     public void buildAlphaButton(){

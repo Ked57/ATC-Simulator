@@ -20,10 +20,12 @@
     <string name="sentence_taxi_charlie">charlie </string>
 
     <string name="sentence_takeoff_cleared">autorisé au décollage </string>
+    <string name="sentence_takeoff_via">via </string>
+    <string name="sentence_takeoff_rw27">piste 27</string>
 
 
     <string name="sentence_landing_cleared">autorisé à l\'atterissage </string>
-
+    <string name="sentence_landing_rw27">piste 27</string>
 
     <string name="sentence_rw27">piste 27 </string>
 </resources>
