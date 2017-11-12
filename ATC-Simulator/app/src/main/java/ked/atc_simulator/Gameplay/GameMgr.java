@@ -1,6 +1,8 @@
 package ked.atc_simulator.Gameplay;
 
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 import ked.atc_simulator.Canvas.Point;
@@ -19,10 +21,13 @@ public class GameMgr {
     private SentenceBuilder sentenceBuilder;
     public final Plane emptyPlane = new Plane();
 
+    public int rate;
+
     public GameMgr(GameActivity context){
         planes = new ArrayList<Plane>();
         airport = new Airport();
 
+        rate = 1; // refresh rate
         this.context = context;
         this.sentenceBuilder = new SentenceBuilder(this);
 
@@ -146,4 +151,22 @@ public class GameMgr {
     public void newSentenceBuilder(){
         sentenceBuilder = new SentenceBuilder(this);
     }
+
+    public void forward(){
+        if(rate < 10){
+            ++rate;
+            context.setRefreshRate(rate);
+            Log.i("touch","rate = "+rate+ " ms: "+(1000/rate));
+        }
+    }
+
+    public void backward(){
+        if(rate > 1){
+            --rate;
+            context.setRefreshRate(rate);
+            Log.i("touch","rate = "+rate+ " ms: "+(1000/rate));
+        }
+    }
+
+    public int getRate(){ return rate; }
 }

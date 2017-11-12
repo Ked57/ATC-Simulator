@@ -54,7 +54,6 @@ public class GameActivity extends AppCompatActivity {
         boardLayout.addView(c);
 
         t = new Timer();
-        //Set the schedule function and rate
         t.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
@@ -70,6 +69,8 @@ public class GameActivity extends AppCompatActivity {
             }
 
         }, 0, 1000);
+
+        setRefreshRate(1);
 
          /* This code together with the one in onDestroy()
          * will make the screen be always on until this Activity gets destroyed. */
@@ -97,6 +98,29 @@ public class GameActivity extends AppCompatActivity {
 
     public void choicesAddButton(Button button){
         choicesLayout.addView(button);
+    }
+
+    public void setRefreshRate(int rate){
+        t.cancel();
+        t.purge();
+
+        t = new Timer();
+        //Set the schedule function and rate
+        t.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        c.invalidate();
+                        Log.i("Refresh","Refreshing");
+                    }
+
+                });
+            }
+
+        }, 0, 1000/rate);
     }
 
     @Override

@@ -7,9 +7,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -19,7 +23,6 @@ import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
 import ked.atc_simulator.R;
-import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class CanvasView extends View {
 
@@ -28,12 +31,14 @@ public class CanvasView extends View {
     private Paint paintWhite;
     private Paint paintBlack;
     private Paint paintBlue;
+    private Bitmap backward, forward;
 
 
     public CanvasView(Context context, GameMgr gameMgr){
         super(context);
         this.gameMgr = gameMgr;
-
+        backward = BitmapFactory.decodeResource(getResources(), R.drawable.backward);
+        forward = BitmapFactory.decodeResource(getResources(), R.drawable.forward);
     }
 
     public void onDraw(Canvas canvas){
@@ -59,10 +64,26 @@ public class CanvasView extends View {
         drawRunway(paintBlue, paintBlack);
         drawPlanes(paintWhite);
 
-        Resources res = getResources();
-        Bitmap bitmap = BitmapFactory.decodeResource(res, R.drawable.backward);
-        //bitmap.setHeight(CoordinateConverter.GetYDipsFromCoordinate(50.0f));
-        canvas.drawBitmap(bitmap, 0, 0, paintWhite);
+
+        canvas.drawBitmap(backward, 0,0, paintWhite);
+        canvas.drawBitmap(forward, 200, 0, paintWhite);
+
+        canvas.drawText("x"+gameMgr.getRate(),200,200,paintWhite);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev){
+        float x = ev.getX();
+        float y = ev.getY();
+        if(x <= 150 && y <= 150){
+            Log.i("touch","backward");
+            gameMgr.backward();
+        } else if (x <= 300 && y <= 150) {
+            gameMgr.forward();
+            Log.i("touch","forward");
+        }
+
+        return true;
     }
 
     public void drawPlanes(Paint paint){
