@@ -18,16 +18,18 @@ import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
 import ked.atc_simulator.R;
+import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class CanvasView extends View {
 
     private GameMgr gameMgr;
     private Canvas canvas;
-    private Paint paintWhite;
+    private Paint paintWhite, paintText;
     private Paint paintBlack;
     private Paint paintBlue;
     private Bitmap backward, forward;
     private String sentence;
+    private Context context;
 
 
     public CanvasView(Context context, GameMgr gameMgr){
@@ -36,6 +38,7 @@ public class CanvasView extends View {
         backward = BitmapFactory.decodeResource(getResources(), R.drawable.backward);
         forward = BitmapFactory.decodeResource(getResources(), R.drawable.forward);
         sentence = "";
+        this.context = context;
     }
 
     public void onDraw(Canvas canvas){
@@ -43,6 +46,10 @@ public class CanvasView extends View {
         paintWhite.setStyle(Paint.Style.FILL_AND_STROKE);
         paintWhite.setColor(Color.WHITE);
 
+        paintText = new Paint();
+        paintText.setStyle(Paint.Style.FILL_AND_STROKE);
+        paintText.setColor(Color.WHITE);
+        paintText.setTextSize(30f);
 
         paintBlue = new Paint();
         paintBlue.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -93,8 +100,7 @@ public class CanvasView extends View {
         ArrayList<Plane> planes = gameMgr.getPlanes();
         for(Plane p : planes){
             canvas.drawPath(p.getPath(),paint);
-            //canvas.drawTextOnPath(""+(p.getAlt()/100),p.getPath(), -20.0f, 40.0f,paintWhite);
-            //canvas.drawTextOnPath(""+p.getSpeed(),p.getPath(), 5.0f, 30.0f,paintWhite);
+            canvas.drawText(p.getName(), CoordinateConverter.GetXDipsFromCoordinate(context,p.getPath().getStartPoint().x), CoordinateConverter.GetYDipsFromCoordinate(context,p.getPath().getStartPoint().y+20),paintText);
         }
     }
 

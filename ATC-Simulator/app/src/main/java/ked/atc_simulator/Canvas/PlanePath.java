@@ -52,4 +52,7 @@ public class PlanePath extends Path {
         this.transform(mMatrix);
     }
 
+    public Point getStartPoint(){
+        return points.get(0);
+    }
 }
