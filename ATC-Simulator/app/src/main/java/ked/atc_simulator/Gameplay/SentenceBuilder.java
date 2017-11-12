@@ -59,6 +59,7 @@ public class SentenceBuilder {
                         @Override
                         public void onClick(View v) {
                             sentence += gameActivity.getResources().getString(R.string.sentence_taxi_cleared)+" ";
+                            gameActivity.setSentence(sentence);
                             buildTaxiClearance();
                         }
                     });
@@ -70,6 +71,7 @@ public class SentenceBuilder {
                         @Override
                         public void onClick(View v) {
                             sentence += gameActivity.getResources().getString(R.string.sentence_takeoff_cleared)+" ";
+                            gameActivity.setSentence(sentence);
                             buildTakeOffClearance();
                         }
                     });
@@ -81,6 +83,7 @@ public class SentenceBuilder {
                         @Override
                         public void onClick(View v) {
                             sentence += gameActivity.getResources().getString(R.string.sentence_landing_cleared)+" ";
+                            gameActivity.setSentence(sentence);
                             buildLandingClearance();
                         }
                     });
@@ -102,6 +105,7 @@ public class SentenceBuilder {
                 sentence += gameActivity.getResources().getString(R.string.sentence_taxi_holdshort)+" ";
                 sentence += gameActivity.getResources().getString(R.string.sentence_taxi_via)+" ";
                 gameActivity.clearChoices();
+                gameActivity.setSentence(sentence);
                 buildAlphaButton();
                 buildBravoButton();
                 buildCharlieButton();
@@ -121,10 +125,10 @@ public class SentenceBuilder {
             public void onClick(View view) {
                 currPlane.setBehavior(0);// Normal
                 currPlane.setPlaneState(new DepartingState(gameMgr));
-                sentence +=  gameActivity.getResources().getString(R.string.sentence_takeoff_via)+" ";
                 sentence += gameActivity.getResources().getString(R.string.sentence_takeoff_rw27);
                 gameActivity.clearChoices();
                 Log.i("Sentence","the sentence is : "+sentence);
+                gameActivity.setSentence(sentence);
                 buildSentence(); // Start over sentence building
             }
         });
@@ -144,6 +148,7 @@ public class SentenceBuilder {
                 sentence += gameActivity.getResources().getString(R.string.sentence_takeoff_rw27);
                 gameActivity.clearChoices();
                 Log.i("Sentence","the sentence is : "+sentence);
+                gameActivity.setSentence(sentence);
                 buildSentence(); // Start over sentence building
             }
         });
@@ -159,6 +164,7 @@ public class SentenceBuilder {
                 gameActivity.clearChoices();
                 sentence += gameActivity.getResources().getString(R.string.sentence_taxi_alpha)+" ";
                 Log.i("Sentence","the sentence is : "+sentence);
+                gameActivity.setSentence(sentence);
                 currPlane.setBehavior(behavior);
                 buildSentence();
             }
@@ -174,6 +180,7 @@ public class SentenceBuilder {
             public void onClick(View v) {
                 gameActivity.clearChoices();
                 sentence += gameActivity.getResources().getString(R.string.sentence_taxi_bravo)+" ";
+                gameActivity.setSentence(sentence);
                 buildCharlieButton();
             }
         });
@@ -188,6 +195,7 @@ public class SentenceBuilder {
             public void onClick(View v) {
                 gameActivity.clearChoices();
                 sentence += gameActivity.getResources().getString(R.string.sentence_taxi_charlie)+" ";
+                gameActivity.setSentence(sentence);
                 buildAlphaButton();
             }
         });

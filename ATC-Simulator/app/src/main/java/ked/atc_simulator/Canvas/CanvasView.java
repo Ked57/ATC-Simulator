@@ -2,16 +2,11 @@ package ked.atc_simulator.Canvas;
 
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,6 +27,7 @@ public class CanvasView extends View {
     private Paint paintBlack;
     private Paint paintBlue;
     private Bitmap backward, forward;
+    private String sentence;
 
 
     public CanvasView(Context context, GameMgr gameMgr){
@@ -39,6 +35,7 @@ public class CanvasView extends View {
         this.gameMgr = gameMgr;
         backward = BitmapFactory.decodeResource(getResources(), R.drawable.backward);
         forward = BitmapFactory.decodeResource(getResources(), R.drawable.forward);
+        sentence = "";
     }
 
     public void onDraw(Canvas canvas){
@@ -69,6 +66,7 @@ public class CanvasView extends View {
         canvas.drawBitmap(forward, 200, 0, paintWhite);
 
         canvas.drawText("x"+gameMgr.getRate(),200,200,paintWhite);
+        canvas.drawText(sentence,500,100,paintWhite);
     }
 
     @Override
@@ -84,6 +82,10 @@ public class CanvasView extends View {
         }
 
         return true;
+    }
+
+    public void setSentence(String sentence){
+        this.sentence = sentence;
     }
 
     public void drawPlanes(Paint paint){

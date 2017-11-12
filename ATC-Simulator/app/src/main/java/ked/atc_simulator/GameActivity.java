@@ -147,4 +147,8 @@ public class GameActivity extends AppCompatActivity {
     public GameMgr getGameMgr(){
         return gameMgr;
     }
+
+    public void setSentence(String sentence){
+        c.setSentence(sentence);
+    }
 }
