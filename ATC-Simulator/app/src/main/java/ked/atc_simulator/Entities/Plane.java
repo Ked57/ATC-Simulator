@@ -99,7 +99,7 @@ public class Plane {
                 int pcx = route.getNextRoute().getPrecisionCoefX();
                 int pcy = route.getNextRoute().getPrecisionCoefY();
 
-                if (diffX <= speed / pcx && diffX > -(speed / pcx) && diffY <= speed / pcy && diffY > -(speed / pcy)) {
+                if (diffX <= (speed / pcx) && diffX > -(speed / pcx) && diffY <= (speed / pcy) && diffY > -(speed / pcy)) {
                     if (route.getNextRoute() instanceof RunwayRoute && behavior == 2) {
                         behavior = 3;
                         return; // not sure about this
@@ -115,6 +115,7 @@ public class Plane {
                     Log.i("RefreshState", "CrosswindRNAction , routeName : " + route.getName());
                 } else if (route.getName().equals("Final") && (diffY >= 5 || diffY <= 2)) {
                     base.y = route.getStartPoint().y + 10;
+                    Log.i("RefreshState", "Final Action");
                 }
 
                 heading = route.getHeading();

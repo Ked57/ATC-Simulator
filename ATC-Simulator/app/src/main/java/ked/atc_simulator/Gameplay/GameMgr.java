@@ -32,7 +32,7 @@ public class GameMgr {
         this.sentenceBuilder = new SentenceBuilder(this);
 
 
-        finale = new Route(175, 90, "Final", 3, 17);
+        finale = new Route(175, 90, "Final", 1, 3);
         finale.setStartPoint(new Point(150,545));
 
         crosswind = new Route(175, 0, "Crosswind", 3, 3);
