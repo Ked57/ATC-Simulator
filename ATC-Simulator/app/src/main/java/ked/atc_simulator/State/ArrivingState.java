@@ -14,6 +14,7 @@ public class ArrivingState extends PlaneState {
     private GameMgr gameMgr;
 
     public ArrivingState(GameMgr gameMgr){
+        super("ArrivingState");
         this.gameMgr = gameMgr;
     }
 

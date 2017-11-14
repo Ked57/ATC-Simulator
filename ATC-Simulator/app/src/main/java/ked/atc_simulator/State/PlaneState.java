@@ -10,6 +10,15 @@ import ked.atc_simulator.Gameplay.Route;
 
 public abstract class PlaneState {
 
+    private String name;
+
+    public PlaneState(String name){
+        this.name = name;
+    }
+
+    public String getName(){
+        return name;
+    }
 
     public Route baseAction(){
         return null;

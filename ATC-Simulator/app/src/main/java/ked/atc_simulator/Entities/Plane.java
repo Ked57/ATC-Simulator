@@ -55,6 +55,10 @@ public class Plane {
         Log.i("Refresh", "Setting behavior to " + b);
     }
 
+    public Point getBase(){ return base; }
+
+    public Route getRoute(){ return route; }
+
     public int getAlt() {
         return alt;
     }

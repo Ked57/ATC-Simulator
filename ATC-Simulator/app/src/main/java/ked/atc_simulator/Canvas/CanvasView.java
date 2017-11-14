@@ -100,7 +100,7 @@ public class CanvasView extends View {
         ArrayList<Plane> planes = gameMgr.getPlanes();
         for(Plane p : planes){
             canvas.drawPath(p.getPath(),paint);
-            canvas.drawText(p.getName(), CoordinateConverter.GetXDipsFromCoordinate(context,p.getPath().getStartPoint().x), CoordinateConverter.GetYDipsFromCoordinate(context,p.getPath().getStartPoint().y+20),paintText);
+            canvas.drawText(p.getName(), CoordinateConverter.GetXDipsFromCoordinate(context,p.getPath().getStartPoint().x), CoordinateConverter.GetYDipsFromCoordinate(context,p.getPath().getStartPoint().y+30),paintText);
         }
     }
 

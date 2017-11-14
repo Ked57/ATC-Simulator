@@ -12,6 +12,7 @@ public class DepartingState extends PlaneState {
     private GameMgr gameMgr;
 
     public DepartingState(GameMgr gameMgr){
+        super("DepartingState");
         this.gameMgr = gameMgr;
     }
 

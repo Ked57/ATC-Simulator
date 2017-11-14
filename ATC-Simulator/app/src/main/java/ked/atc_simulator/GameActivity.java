@@ -1,6 +1,5 @@
 package ked.atc_simulator;
 
-import android.graphics.Color;
 import android.os.PowerManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -10,6 +9,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -18,9 +25,11 @@ import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
+import ked.atc_simulator.Gameplay.Route;
 import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.DepartingState;
-import ked.atc_simulator.Utils.CoordinateConverter;
+import ked.atc_simulator.State.PlaneState;
+import ked.atc_simulator.Utils.XMLParser;
 
 public class GameActivity extends AppCompatActivity {
 
@@ -30,6 +39,7 @@ public class GameActivity extends AppCompatActivity {
     private CanvasView c;
     private Timer t;
     protected PowerManager.WakeLock mWakeLock;
+    private XMLParser parser;
 
 
     @Override
@@ -43,9 +53,35 @@ public class GameActivity extends AppCompatActivity {
 
         gameMgr = new GameMgr(this);
 
-        gameMgr.addPlane(new Plane(this,"R328FS",1490,685,270, gameMgr.getCharlie(), new DepartingState(gameMgr)));
-        gameMgr.addPlane(new Plane(this,"N851TB",150,950,90, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
-        gameMgr.getPlanes().get(0).setBehavior(3);
+        parser = new XMLParser();
+        File save = new File(getApplicationContext().getFilesDir()+"/ATC-Simulator.xml");
+        if(save.exists()){
+            InputStream resultStream = null;
+            try{
+                resultStream = new FileInputStream(getApplicationContext().getFilesDir()+"/ATC-Simulator.xml");
+                Log.i("Parser","File Dir:"+getApplicationContext().getFilesDir()+"/ATC-Simulator.xml");
+                List<XMLParser.Entry>entries = parser.parse(resultStream);
+                Log.i("Parser","EntryNumber : "+entries.size());
+                for(XMLParser.Entry entry : entries){
+                    Log.i("Parser","EntryName : "+entry.nom);
+                    Route route = gameMgr.getRouteByName(entry.route);
+                    PlaneState state = gameMgr.getPlaneStateByName(entry.planeState);
+                    gameMgr.addPlane(new Plane(this,entry.nom,entry.x, entry.y, entry.heading,route, state));
+                }
+            }
+            catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (XmlPullParserException e) {
+                e.printStackTrace();
+            }
+        }else {
+
+            gameMgr.addPlane(new Plane(this, "R328FS", 1490, 685, 270, gameMgr.getCharlie(), new DepartingState(gameMgr)));
+            gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
+            gameMgr.getPlanes().get(0).setBehavior(3);
+        }
 
         gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));
@@ -137,12 +173,40 @@ public class GameActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
+        try {
+            parser.write(getApplicationContext(), gameMgr.getPlanes());
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void onDestroy() {
         this.mWakeLock.release();
         t.cancel();
+        try {
+            parser.write(getApplicationContext(), gameMgr.getPlanes());
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 

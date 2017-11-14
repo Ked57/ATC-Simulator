@@ -9,6 +9,9 @@ import ked.atc_simulator.Canvas.Point;
 import ked.atc_simulator.Entities.Airport;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.GameActivity;
+import ked.atc_simulator.State.ArrivingState;
+import ked.atc_simulator.State.DepartingState;
+import ked.atc_simulator.State.PlaneState;
 
 public class GameMgr {
 
@@ -20,12 +23,14 @@ public class GameMgr {
     private GameActivity context;
     private SentenceBuilder sentenceBuilder;
     public final Plane emptyPlane = new Plane();
+    private ArrayList<Route> routes;
 
     public int rate;
 
     public GameMgr(GameActivity context){
         planes = new ArrayList<Plane>();
         airport = new Airport();
+        routes = new ArrayList<>();
 
         rate = 1; // refresh rate
         this.context = context;
@@ -34,36 +39,47 @@ public class GameMgr {
 
         finale = new Route(175, 90, "Final", 1, 3);
         finale.setStartPoint(new Point(150,545));
+        routes.add(finale);
 
         crosswind = new Route(175, 0, "Crosswind", 3, 3);
-        crosswind.setStartPoint(new Point(1750,950));
+        crosswind.setStartPoint(new Point(1750,850));
+        routes.add(crosswind);
 
         upwind = new Route(175, 90, "Upwind", 3, 3);
-        upwind.setStartPoint(new Point(150,950));
+        upwind.setStartPoint(new Point(150,850));
+        routes.add(upwind);
 
         base = new Route(175, 180, "Base", 3, 3);
         base.setStartPoint(new Point(150,200));
+        routes.add(base);
 
         downwind = new Route(175, 270, "Downwind", 3, 3);
         downwind.setStartPoint(new Point(1750,200));
+        routes.add(downwind);
 
         crosswindRN = new Route(175, 0, "CrosswindRN" , 3, 3);
         crosswindRN.setStartPoint(new Point(1750,545));
+        routes.add(crosswindRN);
 
         runwayLanding = new RunwayRoute(150, 90,1000, "RunwayLanding", 9, 3);
         runwayLanding.setStartPoint(new Point(465,545));
+        routes.add(runwayLanding);
 
         runwayTO = new RunwayRoute(150, 90,1000, "RunwayTO", 3, 3);
         runwayTO.setStartPoint(new Point(465,545));
+        routes.add(runwayTO);
 
         alpha = new Route(30, 0, "Alpha", 3, 3);
         alpha.setStartPoint(new Point(465,685));
+        routes.add(alpha);
 
         charlie = new Route(30, 270, "Charlie", 3, 3);
         charlie.setStartPoint(new Point(1490,685));
+        routes.add(charlie);
 
         bravo = new Route(30, 180, "Bravo", 9, 3);
         bravo.setStartPoint(new Point(1490,545));
+        routes.add(bravo);
 
         crosswind.setNextRoute(downwind);
         upwind.setNextRoute(crosswind);
@@ -77,6 +93,22 @@ public class GameMgr {
         bravo.setNextRoute(charlie);
         finale.setNextRoute(runwayLanding);
 
+    }
+
+    public Route getRouteByName(String name){
+        for(Route r : routes){
+            if(r.getName().equals(name))
+                return r;
+        }
+        return null;
+    }
+
+    public PlaneState getPlaneStateByName(String name){
+        if(name.equals("ArrivingState"))
+            return new ArrivingState(this);
+        else if(name.equals("DepartingState"))
+            return new DepartingState(this);
+        else return null;
     }
 
     public ArrayList<Plane> getPlanes(){ return planes;}
