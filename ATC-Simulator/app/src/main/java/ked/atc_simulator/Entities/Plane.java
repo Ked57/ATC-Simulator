@@ -8,6 +8,7 @@ import ked.atc_simulator.Canvas.Point;
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.Gameplay.Route;
 import ked.atc_simulator.Gameplay.RunwayRoute;
+import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.PlaneState;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
@@ -21,6 +22,7 @@ public class Plane {
     private PlaneState planeState;
     private int behavior; // 0 "normal",  1 "holding" -> Stays in the holding circuit, 2 "runway" -> waits before runway entrance, 3 "waiting" -> stops until further notice
     private String name;
+    private boolean markedForRemoval;
 
     public Plane(GameActivity context,String name, float x, float y, float heading, Route route, PlaneState planeState) {
         base = new Point(x, y);
@@ -32,6 +34,7 @@ public class Plane {
         this.planeState = planeState;
         behavior = 1;
         this.name = name;
+        markedForRemoval = false;
     }
 
     public Plane(GameActivity context,String name, float x, float y, float heading,int behavior, Route route, PlaneState planeState) {
@@ -44,6 +47,7 @@ public class Plane {
         this.planeState = planeState;
         this.behavior = behavior;
         this.name = name;
+        markedForRemoval = false;
     }
 
     public Plane(){}
@@ -96,6 +100,10 @@ public class Plane {
 
     public String getName() { return name; }
 
+    public boolean isMarkedForRemoval() {
+        return markedForRemoval;
+    }
+
     public void calculateNewParams() {
         if (behavior != 3) {
             if (route.getNextRoute() != null) {
@@ -123,6 +131,9 @@ public class Plane {
                 } else if (route.getName().equals("Final") && (diffY >= 5 || diffY <= 2)) {
                     base.y = route.getStartPoint().y + 10;
                     Log.i("RefreshState", "Final Action");
+                }else if(route.getName().equals("Charlie") && planeState instanceof ArrivingState){
+                    behavior = 3;//Stop
+                    markedForRemoval = true;
                 }
 
                 heading = route.getHeading();

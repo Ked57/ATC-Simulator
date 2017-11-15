@@ -236,7 +236,7 @@ public class GameMgr {
         Log.i("Cleanup","Currently "+planes.size()+" planes");
         for (int i = 0; i < planes.size(); ++i) {
             Plane p = planes.get(i);
-            if (p.isOutOfScreen()) {
+            if (p.isOutOfScreen() || p.isMarkedForRemoval()) {
                 Log.i("Cleanup","Deleting "+p.getName());
                 planes.remove(i);
             }
