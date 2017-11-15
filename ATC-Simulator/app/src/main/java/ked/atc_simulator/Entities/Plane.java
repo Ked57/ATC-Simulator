@@ -37,6 +37,19 @@ public class Plane {
         this.name = name;
     }
 
+    public Plane(GameActivity context,String name, float x, float y, float heading,int behavior, Route route, PlaneState planeState) {
+        base = new Point(x, y);
+        this.route = route;
+        alt = 0;
+        speed = route.getSpeed();
+        this.heading = heading;
+        path = new PlanePath(context, base, heading);
+        this.context = context;
+        this.planeState = planeState;
+        this.behavior = behavior;
+        this.name = name;
+    }
+
     public Plane(){}
 
     public PlanePath getPath() {
@@ -58,6 +71,8 @@ public class Plane {
     public Point getBase(){ return base; }
 
     public Route getRoute(){ return route; }
+
+    public int getBehavior(){return behavior; }
 
     public int getAlt() {
         return alt;

@@ -1,5 +1,6 @@
 package ked.atc_simulator;
 
+import android.os.Environment;
 import android.os.PowerManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -54,30 +55,41 @@ public class GameActivity extends AppCompatActivity {
         gameMgr = new GameMgr(this);
 
         parser = new XMLParser();
-        File save = new File(getApplicationContext().getFilesDir()+"/ATC-Simulator.xml");
+
+        File save = new File(getApplicationContext().getFilesDir()+"/save.xml");
+        Log.i("Parser","File Dir:"+getApplicationContext().getFilesDir()+"/save.xml");
         if(save.exists()){
             InputStream resultStream = null;
             try{
-                resultStream = new FileInputStream(getApplicationContext().getFilesDir()+"/ATC-Simulator.xml");
-                Log.i("Parser","File Dir:"+getApplicationContext().getFilesDir()+"/ATC-Simulator.xml");
+                resultStream = new FileInputStream(save);
+                Log.i("Parser","File Dir:"+save.getAbsolutePath());
                 List<XMLParser.Entry>entries = parser.parse(resultStream);
                 Log.i("Parser","EntryNumber : "+entries.size());
                 for(XMLParser.Entry entry : entries){
                     Log.i("Parser","EntryName : "+entry.nom);
                     Route route = gameMgr.getRouteByName(entry.route);
                     PlaneState state = gameMgr.getPlaneStateByName(entry.planeState);
-                    gameMgr.addPlane(new Plane(this,entry.nom,entry.x, entry.y, entry.heading,route, state));
+                    gameMgr.addPlane(new Plane(this,entry.nom,entry.x, entry.y, entry.heading, entry.behavior,route, state));
                 }
+                resultStream.close();
             }
             catch (FileNotFoundException e) {
-                e.printStackTrace();
+               Log.i("Parser",e.toString());
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.i("Parser",e.toString());
             } catch (XmlPullParserException e) {
-                e.printStackTrace();
+                Log.i("Parser",e.toString());
             }
         }else {
-
+            try{
+            save.createNewFile();
+            }
+            catch (FileNotFoundException e) {
+                Log.i("Parser",e.toString());
+            } catch (IOException e) {
+                Log.i("Parser",e.toString());
+            }
+            Log.i("Parser","File Dir:"+save.getAbsolutePath());
             gameMgr.addPlane(new Plane(this, "R328FS", 1490, 685, 270, gameMgr.getCharlie(), new DepartingState(gameMgr)));
             gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
             gameMgr.getPlanes().get(0).setBehavior(3);
@@ -176,16 +188,16 @@ public class GameActivity extends AppCompatActivity {
         try {
             parser.write(getApplicationContext(), gameMgr.getPlanes());
         }catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         catch (IllegalStateException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
     }
 
@@ -196,16 +208,16 @@ public class GameActivity extends AppCompatActivity {
         try {
             parser.write(getApplicationContext(), gameMgr.getPlanes());
         }catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         catch (IllegalStateException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         catch (IOException e) {
-            e.printStackTrace();
+            Log.i("Parser",e.toString());
         }
         super.onDestroy();
     }

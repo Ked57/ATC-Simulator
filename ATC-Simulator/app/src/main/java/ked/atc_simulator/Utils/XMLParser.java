@@ -13,6 +13,8 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlSerializer;
 
 import android.content.Context;
+import android.os.Environment;
+import android.util.Log;
 import android.util.Xml;
 
 import ked.atc_simulator.Entities.Plane;
@@ -32,16 +34,18 @@ public class XMLParser {
         public final String nom;
         public final float x, y, heading;
         public final String route, planeState;
+        public final int behavior;
 
 
         // Constructeur de la classe Entry
-        private Entry(String nom, float x, float y, float heading, String route, String planeState) {
+        private Entry(String nom, float x, float y, float heading,int behavior, String route, String planeState) {
             this.nom = nom;
             this.x = x;
             this.y = y;
             this.heading = heading;
             this.route = route;
             this.planeState = planeState;
+            this.behavior = behavior;
         }
     }
 
@@ -116,6 +120,7 @@ public class XMLParser {
         float x = -1f;
         float y = -1f;
         float heading = -1f;
+        int behavior = -1;
         String route = null;
         String planeState = null;
 
@@ -127,37 +132,27 @@ public class XMLParser {
             }
             String name = parser.getName();
 
-            // si cette balise est un <nom>, extraire le nom
             switch (name) {
                 case "nom":
                     nom = readTag(parser, "nom");
-
-                    //si cette balise est un <message>, extraire le message
                     break;
                 case "x":
                     x = Float.parseFloat(readTag(parser, "x"));
-
-                    // sinon, sauter la balise
                     break;
                 case "y":
                     y = Float.parseFloat(readTag(parser, "y"));
-
-                    // sinon, sauter la balise
                     break;
                 case "heading":
                     heading = Float.parseFloat(readTag(parser, "heading"));
-
-                    // sinon, sauter la balise
+                    break;
+                case "behavior":
+                    heading = Integer.parseInt(readTag(parser, "behavior"));
                     break;
                 case "route":
-                    route = readTag(parser, "x");
-
-                    // sinon, sauter la balise
+                    route = readTag(parser, "route");
                     break;
                 case "planeState":
                     planeState = readTag(parser, "planeState");
-
-                    // sinon, sauter la balise
                     break;
                 default:
                     skip(parser);
@@ -165,7 +160,7 @@ public class XMLParser {
             }
         }
         // retourner une nouvelle Entry avec le nom et message extrait du XML
-        return new Entry(nom, x, y, heading, route, planeState);
+        return new Entry(nom, x, y, heading,behavior, route, planeState);
     }
 
 
@@ -216,12 +211,12 @@ public class XMLParser {
 
     public void write(Context context, ArrayList<Plane> planes) throws FileNotFoundException, IOException {
 
-        FileOutputStream fos = new FileOutputStream(context.getFilesDir() + "/ATC-Simulator.xml");
-        FileOutputStream fileos = context.openFileOutput("ATC-Simulator", Context.MODE_PRIVATE);
+        FileOutputStream fileos = new FileOutputStream(context.getFilesDir()+"/save.xml");//Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/ked.atc-simulator/files/save.xml");
         XmlSerializer xmlSerializer = Xml.newSerializer();
         StringWriter writer = new StringWriter();
         xmlSerializer.setOutput(writer);
         xmlSerializer.startDocument("UTF-8", true);
+        xmlSerializer.startTag(null, "data");
         for(Plane p : planes) {
             xmlSerializer.startTag(null, "entry");
             xmlSerializer.startTag(null, "nom");
@@ -236,6 +231,9 @@ public class XMLParser {
             xmlSerializer.startTag(null, "heading");
             xmlSerializer.text("" + p.getHeading());
             xmlSerializer.endTag(null, "heading");
+            xmlSerializer.startTag(null, "behavior");
+            xmlSerializer.text("" + p.getBehavior());
+            xmlSerializer.endTag(null, "behavior");
             xmlSerializer.startTag(null, "route");
             xmlSerializer.text(p.getRoute().getName());
             xmlSerializer.endTag(null, "route");
@@ -244,9 +242,11 @@ public class XMLParser {
             xmlSerializer.endTag(null, "planeState");
             xmlSerializer.endTag(null, "entry");
         }
+        xmlSerializer.endTag(null, "data");
         xmlSerializer.endDocument();
         xmlSerializer.flush();
         String dataWrite = writer.toString();
+        Log.i("Parser",dataWrite);
         fileos.write(dataWrite.getBytes());
         fileos.close();
     }
