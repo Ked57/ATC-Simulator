@@ -80,10 +80,10 @@ public class CanvasView extends View {
     public boolean onTouchEvent(MotionEvent ev){
         float x = ev.getX();
         float y = ev.getY();
-        if(x <= 150 && y <= 150){
+        if(x <= 200 && y <= 150){
             Log.i("touch","backward");
             gameMgr.backward();
-        } else if (x <= 300 && y <= 150) {
+        } else if (x <= 400 && y <= 150) {
             gameMgr.forward();
             Log.i("touch","forward");
         }
@@ -128,6 +128,7 @@ public class CanvasView extends View {
 
     public void resetPlanes(){
         ArrayList<Plane> planes = gameMgr.getPlanes();
+        gameMgr.cleanupPlanes();
         for(Plane p : planes){
             p.getPath().rewind();
             p.calculateNewParams();

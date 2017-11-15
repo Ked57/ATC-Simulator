@@ -143,4 +143,13 @@ public class Plane {
         }
         path.updatePoints(base, heading);
     }
+    /* Cette fonction vérifie que l'avion est toujours sur l'écran
+
+     */
+    public boolean isOutOfScreen(){
+        if(base.x > 1920 || base.x < 0 || base.y < 0 || base.y > 1080) {//Coordonées, pas DiP
+            Log.i("Cleanup",name+" is currently out of the screen");
+            return true;
+        }else return false;
+    }
 }
