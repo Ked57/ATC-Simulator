@@ -87,6 +87,27 @@ public class SentenceBuilder {
                             buildLandingClearance();
                         }
                     });
+                    Button buttonStop = new Button(gameActivity);
+                    gameActivity.choicesAddButton(buttonStop);
+                    if(currPlane.getBehavior() != 3)
+                        buttonStop.setText(R.string.sentence_stop);
+                    else
+                        buttonStop.setText(R.string.sentence_continue);
+                    buttonStop.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if(currPlane.getBehavior() != 3) {
+                                sentence += gameActivity.getResources().getString(R.string.sentence_stop) + " ";
+                                currPlane.setBehavior(3);//Stop
+                            }
+                            else {
+                                sentence += gameActivity.getResources().getString(R.string.sentence_continue)+" ";
+                                currPlane.setBehavior(2);//Continue until runway
+                            }
+                            gameActivity.setSentence(sentence);
+                            buildSentence();
+                        }
+                    });
                 }
             });
         }

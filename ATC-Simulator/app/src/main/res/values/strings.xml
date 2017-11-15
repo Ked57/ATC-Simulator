@@ -27,4 +27,7 @@
     <string name="sentence_landing_rw27">piste 27</string>
 
     <string name="sentence_rw27">piste 27 </string>
+
+    <string name="sentence_stop">stop !</string>
+    <string name="sentence_continue">continue</string>
 </resources>
