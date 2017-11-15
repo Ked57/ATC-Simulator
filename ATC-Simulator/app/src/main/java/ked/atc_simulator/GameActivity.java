@@ -1,6 +1,5 @@
 package ked.atc_simulator;
 
-import android.os.Environment;
 import android.os.PowerManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;

@@ -8,14 +8,12 @@ import ked.atc_simulator.Canvas.Point;
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.Gameplay.Route;
 import ked.atc_simulator.Gameplay.RunwayRoute;
-import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.PlaneState;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
 public class Plane {
 
     private PlanePath path;
-    private int alt; // Imperial system (feet, knots)
     private float heading, speed;
     private Point base;
     private Route route;
@@ -27,7 +25,6 @@ public class Plane {
     public Plane(GameActivity context,String name, float x, float y, float heading, Route route, PlaneState planeState) {
         base = new Point(x, y);
         this.route = route;
-        alt = 0;
         speed = route.getSpeed();
         this.heading = heading;
         path = new PlanePath(context, base, heading);
@@ -40,7 +37,6 @@ public class Plane {
     public Plane(GameActivity context,String name, float x, float y, float heading,int behavior, Route route, PlaneState planeState) {
         base = new Point(x, y);
         this.route = route;
-        alt = 0;
         speed = route.getSpeed();
         this.heading = heading;
         path = new PlanePath(context, base, heading);
@@ -73,14 +69,6 @@ public class Plane {
     public Route getRoute(){ return route; }
 
     public int getBehavior(){return behavior; }
-
-    public int getAlt() {
-        return alt;
-    }
-
-    public void setAlt(int alt) {
-        this.alt = alt;
-    }
 
     public float getSpeed() {
         return speed;
