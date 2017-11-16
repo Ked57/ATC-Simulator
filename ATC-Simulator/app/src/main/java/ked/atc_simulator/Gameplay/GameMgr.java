@@ -159,7 +159,7 @@ public class GameMgr {
         //Création des modèles d'avions
         mockupPlanes.add(new Plane(context, "R328FS", 550, 665, 0,3, parkingRoutes.get(0), new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "N851TB", 150, 850, 90,1, upwind, new ArrivingState(this)));
-        mockupPlanes.add(new Plane(context, "J458DS", 1750, 200, 270, downwind, new ArrivingState(this)));
+        mockupPlanes.add(new Plane(context, "J458DS", 1750, 200, 270,1, downwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "ZEQ54D", 650, 665, 0,3, parkingRoutes.get(1), new DepartingState(this)));
 
         mockupPlanes.add(new Plane(context, "F8X65Z", 750, 665, 270,3, parkingRoutes.get(2), new DepartingState(this)));
@@ -169,7 +169,7 @@ public class GameMgr {
 
         mockupPlanes.add(new Plane(context, "SD47AZ", 950, 665, 270,3, parkingRoutes.get(4), new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "UF48XW", 150, 850, 90,1, upwind, new ArrivingState(this)));
-        mockupPlanes.add(new Plane(context, "LKI85X", 1750, 200, 270, downwind, new ArrivingState(this)));
+        mockupPlanes.add(new Plane(context, "LKI85X", 1750, 200, 270,1, downwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "ZEQ54D", 1050, 665, 0,3, parkingRoutes.get(5), new DepartingState(this)));
 
         mockupPlanes.add(new Plane(context, "Q54DEZ", 1150, 665, 270,3, parkingRoutes.get(6), new DepartingState(this)));

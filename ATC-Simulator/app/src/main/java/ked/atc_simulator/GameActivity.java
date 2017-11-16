@@ -104,7 +104,6 @@ public class GameActivity extends AppCompatActivity {
 
         }
         gameMgr.createMockupPlanes();
-        gameMgr.addPlane(new Plane(this, "ZEQ54D", 1250, 715, 0,3, gameMgr.getParkingRoutes().get(7), new DepartingState(gameMgr)));
 
 
         c = new CanvasView(this,gameMgr);

@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import java.util.ArrayList;
 
+import ked.atc_simulator.Entities.Parking;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.R;
@@ -148,6 +149,44 @@ public class SentenceBuilder {
                 buildCharlieButton();
             }
         });
+
+        Button buttonParking = new Button(gameActivity);
+        gameActivity.choicesAddButton(buttonParking);
+        buttonParking.setText(R.string.sentence_taxi_parking);
+        buttonParking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sentence += gameActivity.getResources().getString(R.string.sentence_taxi_parking)+" ";
+                gameActivity.clearChoices();
+                gameActivity.setSentence(sentence);
+                buildParkings();
+            }
+        });
+    }
+
+    public void buildParkings(){
+        ArrayList<Parking> parkings = gameMgr.getAirport().getParkings();
+        for(Parking p : parkings){
+            Button button = new Button(gameActivity);
+            gameActivity.choicesAddButton(button);
+            button.setText(p.getName());
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String parkingName = ((Button)view).getText().toString();
+                    ParkingRoute parkingRoute = gameMgr.getParkingRouteByName(parkingName);
+                    currPlane.setParkingRoute(parkingRoute);
+                    sentence += parkingName+" ";
+                    sentence += gameActivity.getResources().getString(R.string.sentence_taxi_via)+" "
+                                +gameActivity.getResources().getString(R.string.sentence_taxi_bravo)+" "
+                                +gameActivity.getResources().getString(R.string.sentence_taxi_charlie)+" ";
+                    currPlane.setBehavior(2);
+                    gameActivity.setSentence(sentence);
+                    gameActivity.clearChoices();
+                    buildSentence();
+                }
+            });
+        }
     }
 
     /**
