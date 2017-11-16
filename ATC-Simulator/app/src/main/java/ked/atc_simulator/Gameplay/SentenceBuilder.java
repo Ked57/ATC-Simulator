@@ -13,7 +13,7 @@ import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.DepartingState;
 
 /**
- * Will build the sentences
+ * Classe permettant de construire les phrases que le joueur dit aux avions
  */
 
 public class SentenceBuilder {
@@ -24,6 +24,10 @@ public class SentenceBuilder {
     private Plane currPlane;
     private int behavior;
 
+    /**
+     * Constructeur de la classe SentenceBuilder
+     * @param gameMgr
+     */
     public SentenceBuilder(GameMgr gameMgr){
         this.gameMgr = gameMgr;
         sentence = "";
@@ -31,6 +35,9 @@ public class SentenceBuilder {
         behavior = 3;
     }
 
+    /**
+     * Permet de commencer a construire une phrase
+     */
     public void buildSentence(){
         sentence = "";
         ArrayList<Plane> planes = gameMgr.getPlanes();
@@ -113,6 +120,9 @@ public class SentenceBuilder {
         }
     }
 
+    /**
+     * Permet de construire l'autorisation au taxi
+     */
     public void buildTaxiClearance(){
 
         gameActivity.clearChoices();
@@ -134,6 +144,9 @@ public class SentenceBuilder {
         });
     }
 
+    /**
+     * Permet de construire l'autorisation au décollage
+     */
     public void buildTakeOffClearance(){
         Log.i("Sentence","take off sentence");
 
@@ -155,6 +168,9 @@ public class SentenceBuilder {
         });
     }
 
+    /**
+     * Permet de construire l'autorisation à l'atterissage
+     */
     public void buildLandingClearance(){
 
         gameActivity.clearChoices();
@@ -175,6 +191,9 @@ public class SentenceBuilder {
         });
     }
 
+    /**
+     * Construit le bouton Alpha
+     */
     public void buildAlphaButton(){
         Button buttonAlpha = new Button(gameActivity);
         gameActivity.choicesAddButton(buttonAlpha);
@@ -192,6 +211,9 @@ public class SentenceBuilder {
         });
     }
 
+    /**
+     * Construit le bouton Bravo
+     */
     public void buildBravoButton(){
         Button buttonBravo = new Button(gameActivity);
         gameActivity.choicesAddButton(buttonBravo);
@@ -207,6 +229,9 @@ public class SentenceBuilder {
         });
     }
 
+    /**
+     * Construit le bouton Charlie
+     */
     public void buildCharlieButton(){
         Button buttonCharlie = new Button(gameActivity);
         gameActivity.choicesAddButton(buttonCharlie);

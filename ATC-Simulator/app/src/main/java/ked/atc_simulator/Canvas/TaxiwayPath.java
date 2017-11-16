@@ -11,10 +11,24 @@ import java.util.ArrayList;
 import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
+/**
+ * Extension de la classe path gérant le dessin sur les canvas
+ * Celle ci gère les taxiway avec des fonctions qui lui sont propres
+ * Il n'y a pas besoin d'autres fonctions car la position de la piste
+ * n'est jamais modifiée
+ */
+
 public class TaxiwayPath extends Path {
 
     private ArrayList<Point> points;
 
+    /**
+     * Constructeur de la classe TaxiwayPath
+     * @param context
+     * @param base
+     * @param lenght
+     * @param heading
+     */
     public TaxiwayPath(GameActivity context, Point base, float lenght, float heading){
             points = new ArrayList<>();
             points.add(new Point(base.x,base.y));

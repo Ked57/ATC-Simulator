@@ -55,6 +55,7 @@ public class GameActivity extends AppCompatActivity {
 
         parser = new XMLParser();
 
+        /* On récupère les avions sauvegardés */
         File save = new File(getApplicationContext().getFilesDir()+"/save.xml");
         Log.i("Parser","File Dir:"+getApplicationContext().getFilesDir()+"/save.xml");
         if(save.exists()){
@@ -145,10 +146,19 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Ajoute un bouton
+     * @param button
+     */
     public void choicesAddButton(Button button){
         choicesLayout.addView(button);
     }
 
+    /**
+     * Change le taux de rafraichissement en supprimant le timer en cours et supprimant
+     * le précédent
+     * @param rate
+     */
     public void setRefreshRate(int rate){
         t.cancel();
         t.purge();
@@ -172,6 +182,7 @@ public class GameActivity extends AppCompatActivity {
         }, 0, 1000/rate);
     }
 
+    //Permet de garder l'écran tout le temps allumé
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -225,6 +236,10 @@ public class GameActivity extends AppCompatActivity {
         return gameMgr;
     }
 
+    /**
+     * Setter de la phrase vers le canvas
+     * @param sentence
+     */
     public void setSentence(String sentence){
         c.setSentence(sentence);
     }

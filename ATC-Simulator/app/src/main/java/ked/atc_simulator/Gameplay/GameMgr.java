@@ -14,6 +14,9 @@ import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.DepartingState;
 import ked.atc_simulator.State.PlaneState;
 
+/**
+ * Cette classe contient et gère les éléments du jeu
+ */
 public class GameMgr {
 
     private ArrayList<Plane> planes, mockupPlanes;
@@ -28,6 +31,10 @@ public class GameMgr {
 
     public int rate;
 
+    /**
+     * Constructeur de la classe GameManager
+     * @param context
+     */
     public GameMgr(GameActivity context) {
         planes = new ArrayList<Plane>();
         mockupPlanes = new ArrayList<>();
@@ -38,7 +45,7 @@ public class GameMgr {
         this.context = context;
         this.sentenceBuilder = new SentenceBuilder(this);
 
-
+        //Création des différentes routes
         finale = new Route(175, 90, "Final", 1, 3);
         finale.setStartPoint(new Point(150, 545));
         routes.add(finale);
@@ -83,6 +90,7 @@ public class GameMgr {
         bravo.setStartPoint(new Point(1490, 545));
         routes.add(bravo);
 
+        //On dit a chaque route quelle est la suivante
         crosswind.setNextRoute(downwind);
         upwind.setNextRoute(crosswind);
         base.setNextRoute(upwind);
@@ -95,6 +103,7 @@ public class GameMgr {
         bravo.setNextRoute(charlie);
         finale.setNextRoute(runwayLanding);
 
+        //Création des modèles d'avions
         mockupPlanes.add(new Plane(context, "R328FS", 1490, 685, 270,3, charlie, new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "N851TB", 150, 850, 90,1, upwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "F8X65Z", 1000, 685, 270,3, charlie, new DepartingState(this)));
@@ -102,6 +111,11 @@ public class GameMgr {
 
     }
 
+    /**
+     * Getter pour une route en fonction de son nom
+     * @param name
+     * @return
+     */
     public Route getRouteByName(String name) {
         for (Route r : routes) {
             if (r.getName().equals(name))
@@ -110,6 +124,11 @@ public class GameMgr {
         return null;
     }
 
+    /**
+     * Retourne un état d'avion en fonction de son nom
+     * @param name
+     * @return
+     */
     public PlaneState getPlaneStateByName(String name) {
         if (name.equals("ArrivingState"))
             return new ArrivingState(this);
@@ -118,74 +137,148 @@ public class GameMgr {
         else return null;
     }
 
+    /**
+     * Getter pour la liste des avions
+     * @return
+     */
     public ArrayList<Plane> getPlanes() {
         return planes;
     }
 
+    /**
+     * Getter pour l'aéroport
+     * @return
+     */
     public Airport getAirport() {
         return airport;
     }
 
+    /**
+     * Ajoute un avion
+     * @param plane
+     */
     public void addPlane(Plane plane) {
         planes.add(plane);
     }
 
+    /**
+     * Supprimer un avion
+     * @param plane
+     */
     public void removePlane(Plane plane) {
         planes.remove(plane);
     }
 
+    /**
+     * Getter pour la route Alpha
+     * @return
+     */
     public Route getAlpha() {
         return alpha;
     }
 
+    /**
+     * Getter pour la route Bravo
+     * @return
+     */
     public Route getBravo() {
         return bravo;
     }
 
+    /**
+     * Getter pour la route Charlie
+     * @return
+     */
     public Route getCharlie() {
         return charlie;
     }
 
+    /**
+     * Getter pour la route Downwind
+     * @return
+     */
     public Route getDownwind() {
         return downwind;
     }
 
+    /**
+     * Getter pour la route Base
+     * @return
+     */
     public Route getBase() {
         return base;
     }
 
+    /**
+     * Getter pour la route Finale
+     * @return
+     */
     public Route getFinale() {
         return finale;
     }
 
+    /**
+     * Getter pour la route Upwind
+     * @return
+     */
     public Route getUpwind() {
         return upwind;
     }
 
+    /**
+     * Getter pour la route Crosswind
+     * @return
+     */
     public Route getCrosswind() {
         return crosswind;
     }
 
+    /**
+     * Getter pour la route CrosswindRN
+     * @return
+     */
     public Route getCrosswindRN() {
         return crosswindRN;
     }
 
+    /**
+     * Getter pour la route RunwayTO
+     * @return
+     */
     public RunwayRoute getRunwayTO() {
         return runwayTO;
     }
 
+    /**
+     * Getter pour la route RunwayLanding
+     * @return
+     */
     public RunwayRoute getRunwayLanding() {
         return runwayLanding;
     }
 
+    /**
+     * Getter pour le contexte
+     * @return
+     */
     public GameActivity getContext() {
         return context;
     }
 
+    /**
+     * Getter pour le constructeur de phrases
+     * @return
+     */
     public SentenceBuilder getSentenceBuilder() {
         return sentenceBuilder;
     }
 
+    /**
+     * Retourne un avion en fonction de son nom
+     * Retourne l'objet emptyPlane si l'avion n'existe pas
+     * @param name
+     * @return
+     */
     public Plane getPlaneByName(String name) {
         for (Plane p : planes) {
             if (p.getName().equals(name)) {
@@ -195,10 +288,17 @@ public class GameMgr {
         return emptyPlane;
     }
 
+    /**
+     * Construit un nouveau constructeur de phrases
+     */
     public void newSentenceBuilder() {
         sentenceBuilder = new SentenceBuilder(this);
     }
 
+    /**
+     * Avance rapide
+     * Augmente de rafraichissement
+     */
     public void forward() {
         if (rate < 10) {
             ++rate;
@@ -207,6 +307,10 @@ public class GameMgr {
         }
     }
 
+    /**
+     * Avance rapide
+     * Réduit le rafraichissement
+     */
     public void backward() {
         if (rate > 1) {
             --rate;
@@ -215,12 +319,18 @@ public class GameMgr {
         }
     }
 
+    /**
+     * Getter pour le taux de rafraichissement
+     * @return
+     */
     public int getRate() {
         return rate;
     }
 
-    /* Cette fonction vérifie qu'un avion n'est pas déjà en jeu
-
+    /**
+     * Cette fonction vérifie qu'un avion n'est pas déjà en jeu
+     * @param p
+     * @return
      */
     public boolean isPlaneAlreadySpawned(Plane p){
         if(!getPlaneByName(p.getName()).equals(emptyPlane)){ // Il ne peut pas y avoir d'avions ayant le même nom dans tous les cas
@@ -228,9 +338,10 @@ public class GameMgr {
         }else return false;
     }
 
-    /* Cette fonction va checker les coordonées des avions et enlever les objets en dehors des coordonnées
-        Elle va aussi rajouter quelques avions, le nombre ici est 2 et arbitraire. Il pourrait être augmenté
-        dans l'application elle même comme un choix de difficulté
+    /**
+     * Cette fonction va checker les coordonées des avions et enlever les objets en dehors des coordonnées
+     * Elle va aussi rajouter quelques avions, le nombre ici est 2 et arbitraire. Il pourrait être augmenté
+     * dans l'application elle même comme un choix de difficulté
      */
     public void cleanupPlanes() {
         Log.i("Cleanup","Currently "+planes.size()+" planes");
@@ -246,7 +357,7 @@ public class GameMgr {
             Plane p;
             Log.i("Cleanup","Planes size is now "+planes.size());
             do {
-                int rand = r.nextInt(3);
+                int rand = r.nextInt(mockupPlanes.size()-1);
                 p = mockupPlanes.get(rand);
             } while (isPlaneAlreadySpawned(p));
             //On ajoute un nouvel avion basé sur le mockup

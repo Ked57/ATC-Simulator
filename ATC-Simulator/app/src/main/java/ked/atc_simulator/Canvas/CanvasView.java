@@ -20,6 +20,10 @@ import ked.atc_simulator.Gameplay.GameMgr;
 import ked.atc_simulator.R;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
+/**
+ *  Extension de la classe View permettant de dessiner les différents éléments (avions, pistes, ...)
+ *  de l'application
+ */
 public class CanvasView extends View {
 
     private GameMgr gameMgr;
@@ -31,7 +35,11 @@ public class CanvasView extends View {
     private String sentence;
     private Context context;
 
-
+    /**
+     * Constructeur de la classe CanvasView
+     * @param context
+     * @param gameMgr
+     */
     public CanvasView(Context context, GameMgr gameMgr){
         super(context);
         this.gameMgr = gameMgr;
@@ -41,6 +49,10 @@ public class CanvasView extends View {
         this.context = context;
     }
 
+    /**
+     * Fonction appelée automatiquement quand la view est dessinée
+     * @param canvas
+     */
     public void onDraw(Canvas canvas){
         paintWhite = new Paint();
         paintWhite.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -64,18 +76,23 @@ public class CanvasView extends View {
 
         this.canvas = canvas;
         canvas.drawColor(Color.BLACK);
-        drawTaxiways(paintBlue,paintBlack);
-        drawRunway(paintBlue, paintBlack);
-        drawPlanes(paintWhite);
+        drawTaxiways(paintBlue,paintBlack); // Dessine les taxiways
+        drawRunway(paintBlue, paintBlack); // Dessine les pistes
+        drawPlanes(paintWhite); // dessine les avions
 
 
-        canvas.drawBitmap(backward, 0,0, paintWhite);
-        canvas.drawBitmap(forward, 200, 0, paintWhite);
+        canvas.drawBitmap(backward, 0,0, paintWhite); // Flèche d'avance rapide en arrière
+        canvas.drawBitmap(forward, 200, 0, paintWhite); // Flèche d'avance rapide en avant
 
-        canvas.drawText("x"+gameMgr.getRate(),200,200,paintWhite);
-        canvas.drawText(sentence,500,100,paintWhite);
+        canvas.drawText("x"+gameMgr.getRate(),200,200,paintWhite); // Affichage du taux d'avance rapide
+        canvas.drawText(sentence,500,100,paintWhite); // Affichage de la phrase
     }
 
+    /**
+     *  Gestion des onTouchEvent pour les flèches d'avance rapide
+     * @param ev
+     * @return
+     */
     @Override
     public boolean onTouchEvent(MotionEvent ev){
         float x = ev.getX();
@@ -91,28 +108,48 @@ public class CanvasView extends View {
         return true;
     }
 
+    /**
+     * Setter pour la phrase à afficher
+     * @param sentence
+     */
     public void setSentence(String sentence){
         this.sentence = sentence;
     }
 
+    /**
+     * Dessine les avions
+     * @param paint
+     */
     public void drawPlanes(Paint paint){
         Log.i("Refresh","Draw planes");
         ArrayList<Plane> planes = gameMgr.getPlanes();
         for(Plane p : planes){
             canvas.drawPath(p.getPath(),paint);
+            // Affiche le nom de l'avion en dessous du dessin
             canvas.drawText(p.getName(), CoordinateConverter.GetXDipsFromCoordinate(context,p.getPath().getStartPoint().x), CoordinateConverter.GetYDipsFromCoordinate(context,p.getPath().getStartPoint().y+30),paintText);
         }
     }
 
+    /**
+     * Dessine les pistes
+     * @param paint
+     * @param paintBlack
+     */
     public void drawRunway(Paint paint, Paint paintBlack){
         paintBlack.setTextSize(45.0f);
         ArrayList<Runway> runways = gameMgr.getAirport().getRunways();
         for(Runway r : runways){
             canvas.drawPath(r.getPath(),paint);
+            // Affiche le numéro de la piste
             canvas.drawTextOnPath(""+r.getNumber(), r.getPath(), 5.0f, -2.0f,paintBlack);
         }
     }
 
+    /**
+     * Dessine les taxiways
+     * @param paint
+     * @param paintBlack
+     */
     public void drawTaxiways(Paint paint, Paint paintBlack){
         paintBlack.setTextSize(25.0f);
         ArrayList<Taxiway> taxiways = gameMgr.getAirport().getTaxiways();
@@ -120,17 +157,25 @@ public class CanvasView extends View {
             Log.i("Drawing","drawing "+t.getNom());
             t.getPath().logPoints();
             canvas.drawPath(t.getPath(),paint);
+            //Affiche le nom du taxiway
             canvas.drawTextOnPath(t.getNom(), t.getPath(), t.gethOffset(), t.getvOffset(),paintBlack);
         }
     }
 
+    /**
+     * Getter pour le canvas
+     * @return
+     */
     public Canvas getCanvas(){ return canvas; }
 
+    /**
+     * Fonction appelée à chaque rafraichissement permettant de calculer les positions des avions
+     */
     public void resetPlanes(){
         ArrayList<Plane> planes = gameMgr.getPlanes();
         gameMgr.cleanupPlanes();
         for(Plane p : planes){
-            p.getPath().rewind();
+            p.getPath().rewind(); // Pour effacer les avions du rafaichissement précédent
             p.calculateNewParams();
         }
     }
