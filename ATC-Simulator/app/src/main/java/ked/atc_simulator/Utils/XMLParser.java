@@ -19,7 +19,11 @@ import android.util.Xml;
 
 import ked.atc_simulator.Entities.Plane;
 
-/* Credits : Iza Marfisi  */
+/**
+ *  Credits : Iza Marfisi
+ *  La classe XMLParser permet de parser et écrire dans un fichier XML
+ *  Elle sauvegarde les avions et leurs paramètres
+ */
 
 public class XMLParser {
 
@@ -37,7 +41,16 @@ public class XMLParser {
         public final int behavior;
 
 
-        // Constructeur de la classe Entry
+        /**
+         * Constructeur de la classe Entry
+         * @param nom
+         * @param x
+         * @param y
+         * @param heading
+         * @param behavior
+         * @param route
+         * @param planeState
+         */
         private Entry(String nom, float x, float y, float heading,int behavior, String route, String planeState) {
             this.nom = nom;
             this.x = x;
@@ -107,7 +120,7 @@ public class XMLParser {
 
     /**
      * Cette fonction parse le contenu d'une balise <entry>
-     * Si elle rencontre une balise de type <nom> ou <message>, elle fait appel à readTag() pour extraire le contenu de la balise
+     * Si elle rencontre une balise connue, elle fait appel à readTag() pour extraire le contenu de la balise
      * Sinon, elle saute la balise avec skip()
      *
      * @param parser le bout de XML
@@ -209,7 +222,13 @@ public class XMLParser {
         }
     }
 
-    public void write(Context context, ArrayList<Plane> planes) throws FileNotFoundException, IOException {
+    /**
+     * Cette fonction écrit dans le fichier XML et sauvegarde les avions et les paramètres
+     * @param context
+     * @param planes
+     * @throws IOException
+     */
+    public void write(Context context, ArrayList<Plane> planes) throws IOException {
 
         FileOutputStream fileos = new FileOutputStream(context.getFilesDir()+"/save.xml");//Environment.getExternalStorageDirectory().getAbsolutePath()+"/Android/data/ked.atc-simulator/files/save.xml");
         XmlSerializer xmlSerializer = Xml.newSerializer();

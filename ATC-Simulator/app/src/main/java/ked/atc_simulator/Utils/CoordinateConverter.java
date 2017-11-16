@@ -6,13 +6,19 @@ import android.view.Display;
 import android.view.WindowManager;
 
 /*
- * This class is meant to convert the coordinates used by the game to DP
- * As the app is forced to landscape, their might be some slight variations between devices their is no standard
- * widht/height ratio as for computer screens or TVs
- * The game uses coordinates from 0 to 1920 for the x axis and from 0 to 1080 for the y axis
+ * Cette classe convertie les coordonées utilisées par le jeu en DP
+ * Comme l'application est forcée en mode paysage, il devrait y avoir quelques variations en fonction des appareils
+ * car il n'y a pas vraiment de standard pour la hauteur et la largeur des écrans et leur ratio n'est jamais le même
+ * Le jeu utilise des coordonées de 0 à 1920 pour l'axe x et de 0 a 1080 pour l'axe y
  */
 public class CoordinateConverter {
 
+    /**
+     * Converti uen coordonnées X en Dip
+     * @param context
+     * @param coordinate
+     * @return
+     */
     public static float GetXDipsFromCoordinate(Context context, float coordinate)
     {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -25,6 +31,12 @@ public class CoordinateConverter {
         return pixels - 0.5f / scale;
     }
 
+    /**
+     * Converti une coordonée Y en Dip
+     * @param context
+     * @param coordinate
+     * @return
+     */
     public static float GetYDipsFromCoordinate(Context context, float coordinate)
     {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
