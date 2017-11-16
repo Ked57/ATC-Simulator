@@ -21,6 +21,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import ked.atc_simulator.Canvas.CanvasView;
+import ked.atc_simulator.Canvas.Point;
+import ked.atc_simulator.Entities.Parking;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
@@ -99,6 +101,17 @@ public class GameActivity extends AppCompatActivity {
         gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,1480,555,100,180,"Bravo",5f,-1f));
         gameMgr.getAirport().addTaxiway(new Taxiway(this,970,180,962,270,"Charlie",460f,-1f));
+
+        gameMgr.getAirport().addParking(new Parking(this,"1",new Point(550,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"2",new Point(650,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"3",new Point(750,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"4",new Point(850,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"5",new Point(950,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"6",new Point(1050,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"7",new Point(1150,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"8",new Point(1250,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"9",new Point(1350,690),50,0,15f,-1f));
+        gameMgr.getAirport().addParking(new Parking(this,"10",new Point(1450,690),50,0,15f,-1f));
 
         c = new CanvasView(this,gameMgr);
         boardLayout.addView(c);

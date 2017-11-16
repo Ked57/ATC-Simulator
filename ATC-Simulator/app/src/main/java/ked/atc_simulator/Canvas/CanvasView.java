@@ -13,6 +13,7 @@ import android.view.View;
 
 import java.util.ArrayList;
 
+import ked.atc_simulator.Entities.Parking;
 import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
@@ -78,6 +79,7 @@ public class CanvasView extends View {
         canvas.drawColor(Color.BLACK);
         drawTaxiways(paintBlue,paintBlack); // Dessine les taxiways
         drawRunway(paintBlue, paintBlack); // Dessine les pistes
+        drawParkings(paintBlue,paintBlack);// Dessine les parkings
         drawPlanes(paintWhite); // dessine les avions
 
 
@@ -151,7 +153,7 @@ public class CanvasView extends View {
      * @param paintBlack
      */
     public void drawTaxiways(Paint paint, Paint paintBlack){
-        paintBlack.setTextSize(25.0f);
+        paintBlack.setTextSize(23.0f);
         ArrayList<Taxiway> taxiways = gameMgr.getAirport().getTaxiways();
         for(Taxiway t : taxiways){
             Log.i("Drawing","drawing "+t.getNom());
@@ -159,6 +161,17 @@ public class CanvasView extends View {
             canvas.drawPath(t.getPath(),paint);
             //Affiche le nom du taxiway
             canvas.drawTextOnPath(t.getNom(), t.getPath(), t.gethOffset(), t.getvOffset(),paintBlack);
+        }
+    }
+
+    public void drawParkings(Paint paint, Paint paintText){
+        paintText.setTextSize(23.0f);
+        ArrayList<Parking> parkings = gameMgr.getAirport().getParkings();
+        for(Parking p : parkings){
+            Log.i("Drawing","drawing parking "+p.getName());
+            canvas.drawPath(p.getPath(),paint);
+            //Afficher le nom du parking
+            canvas.drawTextOnPath(p.getName(), p.getPath(), p.gethOffSet(), p.getvOffSet(), paintText);
         }
     }
 

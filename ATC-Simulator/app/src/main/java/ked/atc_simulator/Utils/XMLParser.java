@@ -23,7 +23,7 @@ import ked.atc_simulator.Entities.Plane;
  *  Credits : Iza Marfisi
  *  La classe XMLParser permet de parser et écrire dans un fichier XML
  *  Elle sauvegarde les avions et leurs paramètres
- */ 
+ */
 
 public class XMLParser {
 

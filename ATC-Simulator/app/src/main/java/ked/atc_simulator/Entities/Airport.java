@@ -12,6 +12,7 @@ public class Airport {
 
     private ArrayList<Runway> runways;
     private ArrayList<Taxiway> taxiways;
+    private ArrayList<Parking> parkings;
 
     /**
      * Constructeur de la classe Airport
@@ -20,6 +21,7 @@ public class Airport {
 
         this.runways = new ArrayList<Runway>();
         this.taxiways = new ArrayList<Taxiway>();
+        this.parkings = new ArrayList<>();
     }
 
     /**
@@ -61,4 +63,28 @@ public class Airport {
      * @param taxiway
      */
     public void removeTaxiway(Taxiway taxiway) { taxiways.remove(taxiway); }
+
+    /**
+     * Getter pour les parkings
+     * @return
+     */
+    public ArrayList<Parking> getParkings() {
+        return parkings;
+    }
+
+    /**
+     * Permet d'ajouter un parking
+     * @param p
+     */
+    public void addParking(Parking p){
+        parkings.add(p);
+    }
+
+    /**
+     * Permet de supprimer un parking
+     * @param p
+     */
+    public void removeParking(Parking p){
+        parkings.remove(p);
+    }
 }
