@@ -97,11 +97,8 @@ public class GameActivity extends AppCompatActivity {
                 Log.i("Parser",e.toString());
             }
             Log.i("Parser","File Dir:"+save.getAbsolutePath());
-            gameMgr.addPlane(new Plane(this, "R328FS", 1490, 685, 270, gameMgr.getCharlie(), new DepartingState(gameMgr)));
-            gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
-            gameMgr.getPlanes().get(0).setBehavior(3);
-
-
+            gameMgr.addPlane(new Plane(this, "R328FS", 475, 715, 0,3, gameMgr.getCharlie(), new DepartingState(gameMgr)));
+            gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90,1, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
         }
         gameMgr.createMockupPlanes();
 

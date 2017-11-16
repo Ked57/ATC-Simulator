@@ -16,6 +16,7 @@ import ked.atc_simulator.GameActivity;
 import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.DepartingState;
 import ked.atc_simulator.State.PlaneState;
+import ked.atc_simulator.Utils.Options;
 
 /**
  * Cette classe contient et gère les éléments du jeu
@@ -409,6 +410,24 @@ public class GameMgr {
     }
 
     /**
+     * Cette fonction vérifie qu'un avion n'est pas trop proche d'un autre
+     * @param p
+     * @return
+     */
+    public boolean isPlaneTooCloseToAnotherPlane(Plane p){
+        for(Plane plane : planes){
+            float diffX = plane.getBase().x-p.getBase().x;
+            float diffY = plane.getBase().y-p.getBase().y;
+
+            if(diffX <= 20 && diffX > -20 && diffY <= 20 && diffY > -20){
+                Log.i("Proximity",plane.getName()+" is too close from "+p.getName());
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Cette fonction va checker les coordonées des avions et enlever les objets en dehors des coordonnées
      * Elle va aussi rajouter quelques avions, le nombre ici est 2 et arbitraire. Il pourrait être augmenté
      * dans l'application elle même comme un choix de difficulté
@@ -427,14 +446,14 @@ public class GameMgr {
                 }
             }
         }
-        while (planes.size() < 2) {
+        while (planes.size() < (Options.getDifficulty()+1)*2) {
             Random r = new Random();
             Plane p;
             Log.i("Cleanup","Planes size is now "+planes.size());
             do {
                 int rand = r.nextInt(mockupPlanes.size()-1);
                 p = mockupPlanes.get(rand);
-            } while (isPlaneAlreadySpawned(p));
+            } while (isPlaneAlreadySpawned(p) || isPlaneTooCloseToAnotherPlane(p));
             //On ajoute un nouvel avion basé sur le mockup
             addPlane(new Plane(context,p.getName(),p.getBase().x,p.getBase().y,p.getHeading(),p.getBehavior(),p.getRoute(),p.getPlaneState()));
             Log.i("Cleanup","Added a new planes based on "+p.getName());

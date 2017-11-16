@@ -4,10 +4,18 @@
     <string name="title_activity_game">GameActivity</string>
     <string name="jouerButton">Jouer</string>
     <string name="tutorialButton">Tutoriel</string>
+    <string name="optionsButton">Options</string>
     <string name="creditsButton">Credits</string>
     <string name="creditText">Ce jeu a été réalisé par Clément Fassot, élève à l\'IUT informatique de Laval.
                                 Il a été réalisé dans le cadre d\'un projet universitaire.\n
                                 Les sources de ce jeu sont en ligne à l\'adresse : github.com/Ked57/ATC-Simulator</string>
+
+    <string name="options_difficulty_easy">Facile</string>
+    <string name="options_difficulty_normal">Normal</string>
+    <string name="options_difficulty_hard">Difficile</string>
+    <string name="options_difficulty_error">Erreur</string>
+    <string name="options_reset_save">Réinitialiser la sauvegarde</string>
+    <string name="options_reset_save_toast_text">Sauvegarde supprimée</string>
 
     <string name="backButtonText">Retour</string>
 
