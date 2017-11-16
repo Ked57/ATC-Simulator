@@ -16,8 +16,8 @@ public class RunwayRoute extends Route {
      * @param precisionCoefx - Le coefficient de précision en X pour la détection d'entrée sur la route
      * @param precisionCoefy - Le coefficient e précision en Y pour la détection d'entrée sur la route
      */
-    public RunwayRoute(int speed, float heading, float lenght, String name, int precisionCoefx, int precisionCoefy){
-        super(speed,heading, name, precisionCoefx, precisionCoefy);
+    public RunwayRoute(int speed, float heading, float lenght, String name, int precisionCoefx, int precisionCoefy, Route nextRoute){
+        super(speed,heading, name, precisionCoefx, precisionCoefy, nextRoute);
         this.lenght = lenght;
     }
 

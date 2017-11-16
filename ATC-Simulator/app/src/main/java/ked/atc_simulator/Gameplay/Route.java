@@ -2,6 +2,7 @@ package ked.atc_simulator.Gameplay;
 
 
 import ked.atc_simulator.Canvas.Point;
+import ked.atc_simulator.GameActivity;
 
 /**
  * Cette classe contient toutes les informations relatives aux routes
@@ -22,14 +23,20 @@ public class Route {
      * @param precisionCoefx - Le coefficient de précision en X pour la détection d'entrée sur la route
      * @param precisionCoefy - Le coefficient e précision en Y pour la détection d'entrée sur la route
      */
-    public Route(int speed, float heading, String name, int precisionCoefx, int precisionCoefy){
+    public Route(int speed, float heading, String name, int precisionCoefx, int precisionCoefy,Route nextRoute){
         this.speed = speed;
         this.heading = heading;
         startPoint = new Point(0,0);
         this.name = name;
         this.precisionCoefx = precisionCoefx;
         this.precisionCoefy = precisionCoefy;
+        this.nextRoute = nextRoute;
     }
+
+    /**
+     * Constructueur de la classe route pour créer une route vide
+     */
+    public Route(){}
 
     /**
      * Getter pour le cap de la oute

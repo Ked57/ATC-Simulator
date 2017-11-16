@@ -27,6 +27,7 @@ import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.Gameplay.GameMgr;
+import ked.atc_simulator.Gameplay.ParkingRoute;
 import ked.atc_simulator.Gameplay.Route;
 import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.DepartingState;
@@ -42,6 +43,10 @@ public class GameActivity extends AppCompatActivity {
     private Timer t;
     protected PowerManager.WakeLock mWakeLock;
     private XMLParser parser;
+
+    public final Plane emptyPlane = new Plane();
+    public final ParkingRoute emptyParkingRoute = new ParkingRoute();
+    public final Route emptyRoute = new Route();
 
 
     @Override
@@ -95,23 +100,12 @@ public class GameActivity extends AppCompatActivity {
             gameMgr.addPlane(new Plane(this, "R328FS", 1490, 685, 270, gameMgr.getCharlie(), new DepartingState(gameMgr)));
             gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
             gameMgr.getPlanes().get(0).setBehavior(3);
+
+
         }
+        gameMgr.createMockupPlanes();
+        gameMgr.addPlane(new Plane(this, "ZEQ54D", 1250, 715, 0,3, gameMgr.getParkingRoutes().get(7), new DepartingState(gameMgr)));
 
-        gameMgr.getAirport().addRunway(new Runway(this,975,540,1000,270));
-        gameMgr.getAirport().addTaxiway(new Taxiway(this,460,555,100,180,"Alpha",5f,-1f));
-        gameMgr.getAirport().addTaxiway(new Taxiway(this,1480,555,100,180,"Bravo",5f,-1f));
-        gameMgr.getAirport().addTaxiway(new Taxiway(this,970,180,962,270,"Charlie",460f,-1f));
-
-        gameMgr.getAirport().addParking(new Parking(this,"1",new Point(550,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"2",new Point(650,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"3",new Point(750,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"4",new Point(850,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"5",new Point(950,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"6",new Point(1050,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"7",new Point(1150,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"8",new Point(1250,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"9",new Point(1350,690),50,0,15f,-1f));
-        gameMgr.getAirport().addParking(new Parking(this,"10",new Point(1450,690),50,0,15f,-1f));
 
         c = new CanvasView(this,gameMgr);
         boardLayout.addView(c);

@@ -6,9 +6,11 @@ import android.util.Log;
 import ked.atc_simulator.Canvas.PlanePath;
 import ked.atc_simulator.Canvas.Point;
 import ked.atc_simulator.GameActivity;
+import ked.atc_simulator.Gameplay.ParkingRoute;
 import ked.atc_simulator.Gameplay.Route;
 import ked.atc_simulator.Gameplay.RunwayRoute;
 import ked.atc_simulator.State.ArrivingState;
+import ked.atc_simulator.State.DepartingState;
 import ked.atc_simulator.State.PlaneState;
 import ked.atc_simulator.Utils.CoordinateConverter;
 
@@ -27,18 +29,20 @@ public class Plane {
     private int behavior; // 0 "normal",  1 "holding" -> Stays in the holding circuit, 2 "runway" -> waits before runway entrance, 3 "waiting" -> stops until further notice
     private String name;
     private boolean markedForRemoval;
+    private ParkingRoute parkingRoute;
 
     /**
      * Constructeur de la classe Plane
+     *
      * @param context
-     * @param name - Nom de l'avion
+     * @param name       - Nom de l'avion
      * @param x
      * @param y
-     * @param heading - Cap
-     * @param route - La route actuelle de l'avion
+     * @param heading    - Cap
+     * @param route      - La route actuelle de l'avion
      * @param planeState - L'état de l'avion (object ArrivingState ou DepartingState)
      */
-    public Plane(GameActivity context,String name, float x, float y, float heading, Route route, PlaneState planeState) {
+    public Plane(GameActivity context, String name, float x, float y, float heading, Route route, PlaneState planeState) {
         base = new Point(x, y);
         this.route = route;
         speed = route.getSpeed();
@@ -49,20 +53,24 @@ public class Plane {
         behavior = 1;
         this.name = name;
         markedForRemoval = false;
+        if(route instanceof ParkingRoute)
+            parkingRoute = context.getGameMgr().getParkingRouteByName(route.getName());
+        else parkingRoute = context.emptyParkingRoute; //
     }
 
     /**
      * Constructeur de la classe Plane
+     *
      * @param context
-     * @param name - Nom de l'avion
+     * @param name       - Nom de l'avion
      * @param x
      * @param y
-     * @param heading - Cap
-     * @param behavior - Comportement de l'avion 0 = normal; 1 = holding (l'avion tourne autour de l'aéroport en attendant l'autorisation à l'attérissage; 2 = runway (l'avion s'arrête avant la piste jusqu'à l'autorisation de décoller); 3 = Stop (l'avion s'arrête si il est au sol)
-     * @param route - La route actuelle de l'avion
+     * @param heading    - Cap
+     * @param behavior   - Comportement de l'avion 0 = normal; 1 = holding (l'avion tourne autour de l'aéroport en attendant l'autorisation à l'attérissage; 2 = runway (l'avion s'arrête avant la piste jusqu'à l'autorisation de décoller); 3 = Stop (l'avion s'arrête si il est au sol)
+     * @param route      - La route actuelle de l'avion
      * @param planeState - L'état de l'avion (object ArrivingState ou DepartingState)
      */
-    public Plane(GameActivity context,String name, float x, float y, float heading,int behavior, Route route, PlaneState planeState) {
+    public Plane(GameActivity context, String name, float x, float y, float heading, int behavior, Route route, PlaneState planeState) {
         base = new Point(x, y);
         this.route = route;
         speed = route.getSpeed();
@@ -73,14 +81,20 @@ public class Plane {
         this.behavior = behavior;
         this.name = name;
         markedForRemoval = false;
+        if(route instanceof ParkingRoute)
+            parkingRoute = context.getGameMgr().getParkingRouteByName(route.getName());
+        else parkingRoute = context.emptyParkingRoute; //
     }
 
     /**
      * Constructeur vide pour créer un objet EmptyPlane permettant de vérifier quand Plane est vide
      */
-    public Plane(){}
+    public Plane() {
+    }
 
-    /** Getter pour le path de l'avion
+    /**
+     * Getter pour le path de l'avion
+     *
      * @return
      */
     public PlanePath getPath() {
@@ -89,6 +103,7 @@ public class Plane {
 
     /**
      * Setter pour la route de l'avion
+     *
      * @param route
      */
     public void setRoute(Route route) {
@@ -98,6 +113,7 @@ public class Plane {
 
     /**
      * Setter pour le comportement de l'avion
+     *
      * @param b
      */
     public void setBehavior(int b) {
@@ -108,25 +124,35 @@ public class Plane {
     }
 
     /**
-     *  Getter pour la base (la position de l'avion)
+     * Getter pour la base (la position de l'avion)
+     *
      * @return
      */
-    public Point getBase(){ return base; }
+    public Point getBase() {
+        return base;
+    }
 
     /**
      * Setter pour la base (la position de l'avion)
+     *
      * @return
      */
-    public Route getRoute(){ return route; }
+    public Route getRoute() {
+        return route;
+    }
 
     /**
      * Getter pour le comportement de l'avion
+     *
      * @return
      */
-    public int getBehavior(){return behavior; }
+    public int getBehavior() {
+        return behavior;
+    }
 
     /**
      * Getter pour le cap de l'avion
+     *
      * @return
      */
     public float getHeading() {
@@ -135,6 +161,7 @@ public class Plane {
 
     /**
      * Getter pour l'état de l'avion
+     *
      * @return
      */
     public PlaneState getPlaneState() {
@@ -143,6 +170,7 @@ public class Plane {
 
     /**
      * Setter pour l'état de l'avion
+     *
      * @param planeState
      */
     public void setPlaneState(PlaneState planeState) {
@@ -151,17 +179,39 @@ public class Plane {
 
     /**
      * Getter pour le nom de l'avion
+     *
      * @return
      */
-    public String getName() { return name; }
+    public String getName() {
+        return name;
+    }
 
     /**
      * Getter pour le marquage de l'avion
      * Le marquage permet de désigner l'avion comme "à supprimer" au prochain rafraichissement
+     *
      * @return
      */
     public boolean isMarkedForRemoval() {
         return markedForRemoval;
+    }
+
+    /**
+     * Setter pour l'objet parkingRoute
+     *
+     * @return
+     */
+    public ParkingRoute getParkingRoute() {
+        return parkingRoute;
+    }
+
+    /**
+     * Getter pour l'objet parkingRoute
+     *
+     * @param parkingRoute
+     */
+    public void setParkingRoute(ParkingRoute parkingRoute) {
+        this.parkingRoute = parkingRoute;
     }
 
     /**
@@ -170,21 +220,58 @@ public class Plane {
     public void calculateNewParams() {
         if (behavior != 3) { // Si l'avion ne doit pas s'arrêter
             if (route.getNextRoute() != null) {
-                //Ces variables correspondent à la différence entre les coordonées de l'avion et celles de l'entrée de la prochaine route
-                float diffX = CoordinateConverter.GetXDipsFromCoordinate(context, base.x - route.getNextRoute().getStartPoint().x);
-                float diffY = CoordinateConverter.GetXDipsFromCoordinate(context, base.y - route.getNextRoute().getStartPoint().y);
 
-                Log.i("Refresh", "Calculating new params routeName: " + route.getName() + ", speed : " + (speed / 3) + ", diffX: " + diffX + " , diffY: " + diffY);
+                float diffX, diffY;
                 /*Le coefficient de précision d'une route permet d'être plus ou moins précis dans le passage à la route suivante en fonction
                     de la vitesse où est l'avion sur la route */
-                int pcx = route.getNextRoute().getPrecisionCoefX();
-                int pcy = route.getNextRoute().getPrecisionCoefY();
+                int pcx, pcy;
+
+                if (planeState instanceof ArrivingState && route.getName().equals("Charlie") ) { // Si on arrive et qu'on a un parking
+                    //Ces variables correspondent à la différence entre les coordonées de l'avion et celles de l'entrée de la prochaine route
+                    diffX = CoordinateConverter.GetXDipsFromCoordinate(context, base.x - parkingRoute.getStartPoint().x);
+                    diffY = CoordinateConverter.GetXDipsFromCoordinate(context, base.y - parkingRoute.getStartPoint().y);
+                    pcx = parkingRoute.getPrecisionCoefX();
+                    pcy = parkingRoute.getPrecisionCoefY();
+                    Log.i("Arrival","Plane "+name+" arriving to parking "+parkingRoute.getName()+"with diff("+diffX+","+diffY+");");
+                }
+                else if(planeState instanceof DepartingState && route instanceof ParkingRoute) { // Si on part et qu'on est sur un parking
+                    //Ces variables correspondent à la différence entre les coordonées de l'avion et celles de l'entrée de la prochaine route
+                    diffX = CoordinateConverter.GetXDipsFromCoordinate(context, base.x - parkingRoute.getStartPoint().x);
+                    diffY = CoordinateConverter.GetXDipsFromCoordinate(context, base.y - parkingRoute.getStartPoint().y);
+                    pcx = context.getGameMgr().getCharlie().getPrecisionCoefX();
+                    pcy = context.getGameMgr().getCharlie().getPrecisionCoefY();
+                    Log.i("Departure","Plane "+name+" departing from parking "+parkingRoute.getName()+" with diff("+diffX+","+diffY+");");
+                }
+                else if(!(route instanceof ParkingRoute)){
+                    //Ces variables correspondent à la différence entre les coordonées de l'avion et celles de l'entrée de la prochaine route
+                    Log.i("Refresh","Plane "+name+"Normal route: "+route.getName());
+                    diffX = CoordinateConverter.GetXDipsFromCoordinate(context, base.x - route.getNextRoute().getStartPoint().x);
+                    diffY = CoordinateConverter.GetXDipsFromCoordinate(context, base.y - route.getNextRoute().getStartPoint().y);
+                    pcx = route.getNextRoute().getPrecisionCoefX();
+                    pcy = route.getNextRoute().getPrecisionCoefY();
+                }else {
+                    Log.i("Refresh","Returning before calculation of new params");
+                    return;// Sinon on fait rien
+                }
+
+                Log.i("Refresh", "Calculating new params nextRoute:"+route.getNextRoute().getName() +", routeName: " + route.getName() + ", speed : " + (speed / 3) + ", diffX: " + diffX + " , diffY: " + diffY);
+
 
                 //passage à la route suivante
                 if (diffX <= (speed / pcx) && diffX > -(speed / pcx) && diffY <= (speed / pcy) && diffY > -(speed / pcy)) {
                     if (route.getNextRoute() instanceof RunwayRoute && behavior == 2) { // Si l'avion doit attendre avant la piste, on l'arrête
                         behavior = 3;
                         return; // et on ne va pas plus loin
+                    } else if (!parkingRoute.equals(context.emptyParkingRoute) && planeState instanceof ArrivingState) { //Si on a une route de parking et qu'on est en train d'arriver
+                        if (route.equals(parkingRoute)) {// Si on est déjà sur la route de parking c'est que les différences sont calculées avec le endPoint
+                            behavior = 3; // On s'arrête
+                            markedForRemoval = true; // Et on supprime l'avion
+                        } else route = parkingRoute; // Sinon on prend la route de parking
+                    }else if(route instanceof ParkingRoute && planeState instanceof DepartingState){//Si on est sur une route de parking et qu'on est sur le départ
+                        Log.i("Departing","Diff("+diffX+","+diffY+") speed: "+speed+" pcx:"+pcx+", pcy:"+pcy);
+                        route = context.getGameMgr().getCharlie(); // On prend la route Charlie
+                        Log.i("Refresh", "Switching route " + route.getName());
+                        base.y += 10; // On ajuste un peu la position Y pour être bien aligné sur Charlie
                     } else route = route.getNextRoute();
                     Log.i("Refresh", "Switching route " + route.getName());
                 }
@@ -198,12 +285,15 @@ public class Plane {
                 } else if (route.getName().equals("Final") && (diffY >= 5 || diffY <= 2)) {
                     base.y = route.getStartPoint().y + 10;
                     Log.i("RefreshState", "Final Action");
-                }else if(route.getName().equals("Charlie") && planeState instanceof ArrivingState){
+                } else if (route.getName().equals("Bravo") && planeState instanceof ArrivingState) {
                     behavior = 3;//Stop
-                    markedForRemoval = true;
+                    base.y += 50;
                 }
                 //On met a jour le cap et la vitesse en fonction de la route empruntée
-                heading = route.getHeading();
+                // Comme on prend la route dans les deux sens si on arrive il faut aller dans le sens inverse du départ
+                if(planeState instanceof ArrivingState && route instanceof ParkingRoute && diffX > (speed / pcx) && diffX <= -(speed / pcx) && diffY > (speed / pcy) && diffY <= -(speed / pcy)) // Comme on prend la route dans les deux sens si on arrive il faut aller dans le sens inverse du départ
+                    heading = -route.getHeading();
+                else heading = route.getHeading();
                 speed = route.getSpeed();
 
                 //La vitesse varie quand on est sur une piste (que ce soit au décollage ou à l'atterissage)
@@ -228,10 +318,10 @@ public class Plane {
     /* Cette fonction vérifie que l'avion est toujours sur l'écran de façon à supprimer ceux qui en sortent
      *
      */
-    public boolean isOutOfScreen(){
-        if(base.x > 1920 || base.x < 0 || base.y < 0 || base.y > 1080) {//Coordonées, pas DiP
-            Log.i("Cleanup",name+" is currently out of the screen");
+    public boolean isOutOfScreen() {
+        if (base.x > 1920 || base.x < 0 || base.y < 0 || base.y > 1080) {//Coordonées, pas DiP
+            Log.i("Cleanup", name + " is currently out of the screen");
             return true;
-        }else return false;
+        } else return false;
     }
 }

@@ -35,7 +35,7 @@ public class DepartingState extends PlaneState {
      * @return
      */
     public Route crosswindRNAction(){
-        return new Route(175, 90, "StraitEastDeparture", 3, 3);
+        return new Route(175, 90, "StraitEastDeparture", 3, 3,null);
     }
 
 

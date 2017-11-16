@@ -58,7 +58,7 @@ public class SentenceBuilder {
                 public void onClick(View v) {
                     sentence += ((Button)v).getText().toString();
                     currPlane = gameMgr.getPlaneByName(sentence);
-                    if(currPlane.equals(gameMgr.emptyPlane)){
+                    if(currPlane.equals(gameMgr.getContext().emptyPlane)){
                         Log.i("Sentence","currPlane is null");
                         return;
                     }
