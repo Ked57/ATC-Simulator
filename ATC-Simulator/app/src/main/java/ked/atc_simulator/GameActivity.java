@@ -132,6 +132,9 @@ public class GameActivity extends AppCompatActivity {
         gameMgr.getSentenceBuilder().buildSentence();
     }
 
+    /**
+     * Remet à l'état initial la barre de boutons
+     */
     public void clearChoices(){
 
         choicesLayout.removeAllViewsInLayout();

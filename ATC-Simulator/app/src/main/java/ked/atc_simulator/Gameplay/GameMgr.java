@@ -350,6 +350,11 @@ public class GameMgr {
             if (p.isOutOfScreen() || p.isMarkedForRemoval()) {
                 Log.i("Cleanup","Deleting "+p.getName());
                 planes.remove(i);
+                if(getSentenceBuilder().isSentenceEmpty()) {
+                    //On met à jour le choix des avions
+                    context.clearChoices();
+                    getSentenceBuilder().buildSentence();
+                }
             }
         }
         while (planes.size() < 2) {
@@ -363,6 +368,11 @@ public class GameMgr {
             //On ajoute un nouvel avion basé sur le mockup
             addPlane(new Plane(context,p.getName(),p.getBase().x,p.getBase().y,p.getHeading(),p.getBehavior(),p.getRoute(),p.getPlaneState()));
             Log.i("Cleanup","Added a new planes based on "+p.getName());
+            if(getSentenceBuilder().isSentenceEmpty()) {
+                //On met à jour le choix des avions
+                context.clearChoices();
+                getSentenceBuilder().buildSentence();
+            }
         }
     }
 }

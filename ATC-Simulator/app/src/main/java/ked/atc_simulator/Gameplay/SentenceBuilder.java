@@ -35,6 +35,12 @@ public class SentenceBuilder {
         behavior = 3;
     }
 
+    public boolean isSentenceEmpty(){
+        if(sentence.equals(""))
+            return true;
+        else return false;
+    }
+
     /**
      * Permet de commencer a construire une phrase
      */
