@@ -54,16 +54,12 @@ public class GameMgr {
         airport.addTaxiway(new Taxiway(context,1480,555,100,180,"Bravo",5f,-1f));
         airport.addTaxiway(new Taxiway(context,970,180,962,270,"Charlie",460f,-1f));
 
-        airport.addParking(new Parking(context,"P1",new Point(550,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P2",new Point(650,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P3",new Point(750,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P4",new Point(850,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P5",new Point(950,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P6",new Point(1050,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P7",new Point(1150,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P8",new Point(1250,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P9",new Point(1350,690),50,0,15f,-1f));
-        airport.addParking(new Parking(context,"P10",new Point(1450,690),50,0,15f,-1f));
+        airport.addParking(new Parking(context,"P1",new Point(470,690),50,0,15f,-1f));
+        airport.addParking(new Parking(context,"P2",new Point(675,690),50,0,15f,-1f));
+        airport.addParking(new Parking(context,"P3",new Point(875,690),50,0,15f,-1f));
+        airport.addParking(new Parking(context,"P4",new Point(1075,690),50,0,15f,-1f));
+        airport.addParking(new Parking(context,"P5",new Point(1275,690),50,0,15f,-1f));
+        airport.addParking(new Parking(context,"P6",new Point(1475,690),50,0,15f,-1f));
 
         //Création des différentes routes
         finale = new Route(175, 90, "Final", 1, 3,context.emptyRoute);
@@ -127,8 +123,8 @@ public class GameMgr {
         int i = 1;
         for(Parking p : getAirport().getParkings()){
             ParkingRoute pr = new ParkingRoute(30,0,"P"+i,3,3,context.emptyRoute);
-            pr.setStartPoint(new Point((550+(i-1)*100),665));
-            pr.setEndPoint((550+(i-1)*100),715);
+            pr.setStartPoint(new Point((475+(i-1)*200),665));
+            pr.setEndPoint((475+(i-1)*200),715);
             pr.setNextRoute(charlie);
             parkingRoutes.add(pr);
             Log.i("ParkingRoute","Created a parking route "+pr.getName()+" with startPoint :("+pr.getStartPoint().x+","+pr.getStartPoint().y+") and endPoint :("+pr.getEndPoint().x+","+pr.getEndPoint().y+")");
@@ -157,25 +153,25 @@ public class GameMgr {
 
     public void createMockupPlanes(){
         //Création des modèles d'avions
-        mockupPlanes.add(new Plane(context, "R328FS", 550, 665, 0,3, parkingRoutes.get(0), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "R328FS", 475, 715, 0,3, parkingRoutes.get(0), new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "N851TB", 150, 850, 90,1, upwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "J458DS", 1750, 200, 270,1, downwind, new ArrivingState(this)));
-        mockupPlanes.add(new Plane(context, "ZEQ54D", 650, 665, 0,3, parkingRoutes.get(1), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "ZEQ54D", 675, 715, 0,3, parkingRoutes.get(1), new DepartingState(this)));
 
-        mockupPlanes.add(new Plane(context, "F8X65Z", 750, 665, 270,3, parkingRoutes.get(2), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "F8X65Z", 875, 715, 270,3, parkingRoutes.get(2), new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "AB74ZE", 150, 850, 90,1, upwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "PO15AZ", 1750, 200, 270,1, downwind, new ArrivingState(this)));
-        mockupPlanes.add(new Plane(context, "ZEQ54D", 850, 665, 0,3, parkingRoutes.get(3), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "ZEQ54D", 1075, 715, 0,3, parkingRoutes.get(3), new DepartingState(this)));
 
-        mockupPlanes.add(new Plane(context, "SD47AZ", 950, 665, 270,3, parkingRoutes.get(4), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "SD47AZ", 1275, 715, 270,3, parkingRoutes.get(4), new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "UF48XW", 150, 850, 90,1, upwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "LKI85X", 1750, 200, 270,1, downwind, new ArrivingState(this)));
-        mockupPlanes.add(new Plane(context, "ZEQ54D", 1050, 665, 0,3, parkingRoutes.get(5), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "ZEQ54D", 1450, 715, 0,3, parkingRoutes.get(5), new DepartingState(this)));
 
-        mockupPlanes.add(new Plane(context, "Q54DEZ", 1150, 665, 270,3, parkingRoutes.get(6), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "Q54DEZ", 875, 715, 270,3, parkingRoutes.get(2), new DepartingState(this)));
         mockupPlanes.add(new Plane(context, "AEG48X", 150, 850, 90,1, upwind, new ArrivingState(this)));
         mockupPlanes.add(new Plane(context, "JEF48T", 1750, 200, 270,1, downwind, new ArrivingState(this)));
-        mockupPlanes.add(new Plane(context, "ZEQ54D", 1250, 665, 0,3, parkingRoutes.get(7), new DepartingState(this)));
+        mockupPlanes.add(new Plane(context, "ZEQ54D", 475, 715, 0,3, parkingRoutes.get(4), new DepartingState(this)));
     }
 
     /**
