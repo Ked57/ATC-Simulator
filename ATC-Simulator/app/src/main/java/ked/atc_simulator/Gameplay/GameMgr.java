@@ -434,7 +434,7 @@ public class GameMgr {
     }
 
     public void gameOver(){
-            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_Dialog);
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_DayNight);
 
             builder.setMessage(R.string.game_over_text)
                     .setTitle(R.string.game_over_title);

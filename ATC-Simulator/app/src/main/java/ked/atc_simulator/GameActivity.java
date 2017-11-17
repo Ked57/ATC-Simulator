@@ -43,6 +43,7 @@ public class GameActivity extends AppCompatActivity {
     private Timer t;
     protected PowerManager.WakeLock mWakeLock;
     private XMLParser parser;
+    private boolean resetSave;
 
     public final Plane emptyPlane = new Plane();
     public final ParkingRoute emptyParkingRoute = new ParkingRoute();
@@ -62,48 +63,48 @@ public class GameActivity extends AppCompatActivity {
 
         parser = new XMLParser();
 
+        resetSave = false;
+
         /* On récupère les avions sauvegardés */
-        File save = new File(getApplicationContext().getFilesDir()+"/save.xml");
-        Log.i("Parser","File Dir:"+getApplicationContext().getFilesDir()+"/save.xml");
-        if(save.exists()){
+        File save = new File(getApplicationContext().getFilesDir() + "/save.xml");
+        Log.i("Parser", "File Dir:" + getApplicationContext().getFilesDir() + "/save.xml");
+        if (save.exists()) {
             InputStream resultStream = null;
-            try{
+            try {
                 resultStream = new FileInputStream(save);
-                Log.i("Parser","File Dir:"+save.getAbsolutePath());
-                List<XMLParser.Entry>entries = parser.parse(resultStream);
-                Log.i("Parser","EntryNumber : "+entries.size());
-                for(XMLParser.Entry entry : entries){
-                    Log.i("Parser","EntryName : "+entry.nom);
+                Log.i("Parser", "File Dir:" + save.getAbsolutePath());
+                List<XMLParser.Entry> entries = parser.parse(resultStream);
+                Log.i("Parser", "EntryNumber : " + entries.size());
+                for (XMLParser.Entry entry : entries) {
+                    Log.i("Parser", "EntryName : " + entry.nom);
                     Route route = gameMgr.getRouteByName(entry.route);
                     PlaneState state = gameMgr.getPlaneStateByName(entry.planeState);
-                    gameMgr.addPlane(new Plane(this,entry.nom,entry.x, entry.y, entry.heading, entry.behavior,route, state));
+                    gameMgr.addPlane(new Plane(this, entry.nom, entry.x, entry.y, entry.heading, entry.behavior, route, state));
                 }
                 resultStream.close();
-            }
-            catch (FileNotFoundException e) {
-               Log.i("Parser",e.toString());
+            } catch (FileNotFoundException e) {
+                Log.i("Parser", e.toString());
             } catch (IOException e) {
-                Log.i("Parser",e.toString());
+                Log.i("Parser", e.toString());
             } catch (XmlPullParserException e) {
-                Log.i("Parser",e.toString());
+                Log.i("Parser", e.toString());
             }
-        }else {
-            try{
-            save.createNewFile();
-            }
-            catch (FileNotFoundException e) {
-                Log.i("Parser",e.toString());
+        } else {
+            try {
+                save.createNewFile();
+            } catch (FileNotFoundException e) {
+                Log.i("Parser", e.toString());
             } catch (IOException e) {
-                Log.i("Parser",e.toString());
+                Log.i("Parser", e.toString());
             }
-            Log.i("Parser","File Dir:"+save.getAbsolutePath());
-            gameMgr.addPlane(new Plane(this, "R328FS", 475, 715, 0,3, gameMgr.getCharlie(), new DepartingState(gameMgr)));
-            gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90,1, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
+            Log.i("Parser", "File Dir:" + save.getAbsolutePath());
+            gameMgr.addPlane(new Plane(this, "R328FS", 475, 715, 0, 3, gameMgr.getCharlie(), new DepartingState(gameMgr)));
+            gameMgr.addPlane(new Plane(this, "N851TB", 150, 850, 90, 1, gameMgr.getUpwind(), new ArrivingState(gameMgr)));
         }
         gameMgr.createMockupPlanes();
 
 
-        c = new CanvasView(this,gameMgr);
+        c = new CanvasView(this, gameMgr);
         boardLayout.addView(c);
 
         t = new Timer();
@@ -115,7 +116,7 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         c.invalidate();
-                        Log.i("Refresh","Refreshing");
+                        Log.i("Refresh", "Refreshing");
                     }
 
                 });
@@ -138,7 +139,7 @@ public class GameActivity extends AppCompatActivity {
     /**
      * Remet à l'état initial la barre de boutons
      */
-    public void clearChoices(){
+    public void clearChoices() {
 
         choicesLayout.removeAllViewsInLayout();
         Button backButton = new Button(this);
@@ -154,18 +155,20 @@ public class GameActivity extends AppCompatActivity {
 
     /**
      * Ajoute un bouton
+     *
      * @param button
      */
-    public void choicesAddButton(Button button){
+    public void choicesAddButton(Button button) {
         choicesLayout.addView(button);
     }
 
     /**
      * Change le taux de rafraichissement en supprimant le timer en cours et supprimant
      * le précédent
+     *
      * @param rate
      */
-    public void setRefreshRate(int rate){
+    public void setRefreshRate(int rate) {
         t.cancel();
         t.purge();
 
@@ -179,13 +182,13 @@ public class GameActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         c.invalidate();
-                        Log.i("Refresh","Refreshing");
+                        Log.i("Refresh", "Refreshing");
                     }
 
                 });
             }
 
-        }, 0, 1000/rate);
+        }, 0, 1000 / rate);
     }
 
     //Permet de garder l'écran tout le temps allumé
@@ -201,19 +204,18 @@ public class GameActivity extends AppCompatActivity {
                             | View.SYSTEM_UI_FLAG_FULLSCREEN
                             | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
         }
-        try {
-            parser.write(getApplicationContext(), gameMgr.getPlanes());
-        }catch (FileNotFoundException e) {
-            Log.i("Parser",e.toString());
-        }
-        catch (IllegalArgumentException e) {
-            Log.i("Parser",e.toString());
-        }
-        catch (IllegalStateException e) {
-            Log.i("Parser",e.toString());
-        }
-        catch (IOException e) {
-            Log.i("Parser",e.toString());
+        if (!resetSave) {
+            try {
+                parser.write(getApplicationContext(), gameMgr.getPlanes());
+            } catch (FileNotFoundException e) {
+                Log.i("Parser", e.toString());
+            } catch (IllegalArgumentException e) {
+                Log.i("Parser", e.toString());
+            } catch (IllegalStateException e) {
+                Log.i("Parser", e.toString());
+            } catch (IOException e) {
+                Log.i("Parser", e.toString());
+            }
         }
     }
 
@@ -221,36 +223,37 @@ public class GameActivity extends AppCompatActivity {
     public void onDestroy() {
         this.mWakeLock.release();
         t.cancel();
-        try {
-            parser.write(getApplicationContext(), gameMgr.getPlanes());
-        }catch (FileNotFoundException e) {
-            Log.i("Parser",e.toString());
-        }
-        catch (IllegalArgumentException e) {
-            Log.i("Parser",e.toString());
-        }
-        catch (IllegalStateException e) {
-            Log.i("Parser",e.toString());
-        }
-        catch (IOException e) {
-            Log.i("Parser",e.toString());
+        if (!resetSave) {
+            try {
+                parser.write(getApplicationContext(), gameMgr.getPlanes());
+            } catch (FileNotFoundException e) {
+                Log.i("Parser", e.toString());
+            } catch (IllegalArgumentException e) {
+                Log.i("Parser", e.toString());
+            } catch (IllegalStateException e) {
+                Log.i("Parser", e.toString());
+            } catch (IOException e) {
+                Log.i("Parser", e.toString());
+            }
         }
         super.onDestroy();
     }
 
-    public GameMgr getGameMgr(){
+    public GameMgr getGameMgr() {
         return gameMgr;
     }
 
     /**
      * Setter de la phrase vers le canvas
+     *
      * @param sentence
      */
-    public void setSentence(String sentence){
+    public void setSentence(String sentence) {
         c.setSentence(sentence);
     }
 
-    public void resetSave(){
+    public void resetSave() {
         getApplicationContext().deleteFile("save.xml");
+        resetSave = true;
     }
 }
