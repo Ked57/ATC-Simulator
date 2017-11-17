@@ -249,4 +249,8 @@ public class GameActivity extends AppCompatActivity {
     public void setSentence(String sentence){
         c.setSentence(sentence);
     }
+
+    public void resetSave(){
+        getApplicationContext().deleteFile("save.xml");
+    }
 }

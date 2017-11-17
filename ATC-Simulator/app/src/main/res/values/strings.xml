@@ -17,6 +17,10 @@
     <string name="options_reset_save">Réinitialiser la sauvegarde</string>
     <string name="options_reset_save_toast_text">Sauvegarde supprimée</string>
 
+    <string name="game_over_text">Une collision a eu lieu ! Vous allez être redirigé vers le menu principal</string>
+    <string name="game_over_title">Game Over</string>
+    <string name="game_over_ok">Ok</string>
+
     <string name="backButtonText">Retour</string>
 
     <string name="sentence_taxi_cleared">taxi </string>

@@ -1,7 +1,10 @@
 package ked.atc_simulator.Gameplay;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -13,6 +16,7 @@ import ked.atc_simulator.Entities.Plane;
 import ked.atc_simulator.Entities.Runway;
 import ked.atc_simulator.Entities.Taxiway;
 import ked.atc_simulator.GameActivity;
+import ked.atc_simulator.R;
 import ked.atc_simulator.State.ArrivingState;
 import ked.atc_simulator.State.DepartingState;
 import ked.atc_simulator.State.PlaneState;
@@ -32,6 +36,7 @@ public class GameMgr {
     private GameActivity context;
     private SentenceBuilder sentenceBuilder;
     private ArrayList<Route> routes;
+    private boolean gameOver;
 
     public int rate;
 
@@ -46,6 +51,7 @@ public class GameMgr {
         routes = new ArrayList<>();
         parkingRoutes = new ArrayList<>();
 
+        gameOver = false;
         rate = 1; // refresh rate
         this.context = context;
         this.sentenceBuilder = new SentenceBuilder(this);
@@ -416,15 +422,34 @@ public class GameMgr {
      */
     public boolean isPlaneTooCloseToAnotherPlane(Plane p){
         for(Plane plane : planes){
-            float diffX = plane.getBase().x-p.getBase().x;
-            float diffY = plane.getBase().y-p.getBase().y;
+            float diffX = (plane.getBase().x)-(p.getBase().x);
+            float diffY = (plane.getBase().y)-(p.getBase().y);
 
-            if(diffX <= 20 && diffX > -20 && diffY <= 20 && diffY > -20){
-                Log.i("Proximity",plane.getName()+" is too close from "+p.getName());
+            if(!p.equals(plane) && diffX <= 10 && diffX > -10 && diffY <= 10 && diffY > -10){
+                Log.i("Proximity",plane.getName()+" is too close from "+p.getName()+" diff("+diffX+","+diffY+")");
                 return true;
             }
         }
         return false;
+    }
+
+    public void gameOver(){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_AppCompat_Dialog);
+
+            builder.setMessage(R.string.game_over_text)
+                    .setTitle(R.string.game_over_title);
+            // Add the buttons
+            builder.setNeutralButton(R.string.game_over_ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    context.resetSave();
+                    Toast.makeText(context, context.getResources().getString(R.string.options_reset_save_toast_text), Toast.LENGTH_SHORT).show();
+                    context.finish();
+                }
+            });
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+            gameOver = true;
     }
 
     /**
@@ -436,7 +461,10 @@ public class GameMgr {
         Log.i("Cleanup","Currently "+planes.size()+" planes");
         for (int i = 0; i < planes.size(); ++i) {
             Plane p = planes.get(i);
-            if (p.isOutOfScreen() || p.isMarkedForRemoval()) {
+            if(isPlaneTooCloseToAnotherPlane(p) && !gameOver) {
+                gameOver();
+            }
+            else if (p.isOutOfScreen() || p.isMarkedForRemoval()) {
                 Log.i("Cleanup","Deleting "+p.getName());
                 planes.remove(i);
                 if(getSentenceBuilder().isSentenceEmpty()) {
